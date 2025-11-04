@@ -1,0 +1,422 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Settings | TharakaHub{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'users/css/dashboard.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    .settings-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+    }
+
+    .settings-header {
+        margin-bottom: 32px;
+    }
+
+    .settings-header h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin: 0 0 8px;
+        color: var(--text, #1f2937);
+    }
+
+    .settings-header p {
+        color: var(--muted, #6b7280);
+        margin: 0;
+    }
+
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 24px;
+    }
+
+    .settings-nav {
+        background: var(--card, #ffffff);
+        border-radius: var(--radius, 12px);
+        padding: 20px;
+        box-shadow: var(--shadow, 0 6px 18px rgba(0,0,0,0.08));
+        height: fit-content;
+        position: sticky;
+        top: calc(var(--nav-height, 64px) + 16px);
+    }
+
+    .settings-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: var(--text, #1f2937);
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 4px;
+        transition: all 0.2s;
+    }
+
+    .settings-nav-item:hover,
+    .settings-nav-item.active {
+        background: var(--bg, #f5f7fb);
+        color: var(--primary, #007bff);
+    }
+
+    .settings-content {
+        background: var(--card, #ffffff);
+        border-radius: var(--radius, 12px);
+        padding: 32px;
+        box-shadow: var(--shadow, 0 6px 18px rgba(0,0,0,0.08));
+    }
+
+    .form-section {
+        margin-bottom: 32px;
+    }
+
+    .form-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .form-section h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 8px;
+        color: var(--text, #1f2937);
+    }
+
+    .form-section p {
+        color: var(--muted, #6b7280);
+        margin: 0 0 24px;
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--text, #1f2937);
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group input[type="url"],
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary, #007bff);
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .form-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .form-checkbox input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .form-checkbox label {
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .profile-picture-section {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .profile-picture-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #e5e7eb;
+    }
+
+    .profile-picture-placeholder {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: var(--gradient, linear-gradient(135deg, #007bff, #00b4d8));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 600;
+        border: 3px solid #e5e7eb;
+    }
+
+    .btn-primary {
+        background: var(--gradient, linear-gradient(135deg, #007bff, #00b4d8));
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 1rem;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    .messages {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+    }
+
+    .messages li {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+
+    .messages .success {
+        background: #d1fae5;
+        color: #065f46;
+        border: 1px solid #6ee7b7;
+    }
+
+    .messages .error {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fca5a5;
+    }
+
+    @media (max-width: 768px) {
+        .settings-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .settings-nav {
+            position: static;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <div class="settings-header">
+        <h1>Settings</h1>
+        <p>Manage your account settings and preferences</p>
+    </div>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="settings-grid">
+        <!-- Settings Navigation -->
+        <nav class="settings-nav">
+            <a href="#profile" class="settings-nav-item active">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#preferences" class="settings-nav-item">
+                <i class="fas fa-bell"></i>
+                <span>Preferences</span>
+            </a>
+        </nav>
+
+        <!-- Settings Content -->
+        <div class="settings-content">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Profile Information Section -->
+                <div class="form-section" id="profile">
+                    <h2>Profile Information</h2>
+                    <p>Update your personal information and profile picture</p>
+
+                    <!-- Profile Picture -->
+                    <div class="form-group">
+                        <label>Profile Picture</label>
+                        <div class="profile-picture-section">
+                            {% if profile.profile_picture %}
+                            <img src="{{ profile.profile_picture.url }}" alt="Profile" class="profile-picture-preview">
+                            {% else %}
+                            <div class="profile-picture-placeholder">
+                                {{ user.username|slice:":1"|upper }}
+                            </div>
+                            {% endif %}
+                            <div>
+                                <input type="file" name="profile_picture" accept="image/*" style="padding: 8px;">
+                                <p style="margin-top: 8px; font-size: 0.85rem; color: var(--muted, #6b7280);">
+                                    Recommended: Square image, at least 200x200px
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Name Fields -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name" value="{{ profile.first_name|default:'' }}" placeholder="Enter your first name">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" value="{{ profile.last_name|default:'' }}" placeholder="Enter your last name">
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="{{ user.email|default:'' }}" placeholder="your.email@example.com" required>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="form-group">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="tel" id="phone_number" name="phone_number" value="{{ profile.phone_number|default:'' }}" placeholder="+254 700 000 000">
+                    </div>
+
+                    <!-- Bio -->
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" name="bio" placeholder="Tell us about yourself...">{{ profile.bio|default:'' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Location Section -->
+                <div class="form-section">
+                    <h2>Location</h2>
+                    <p>Share your location information</p>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" value="{{ profile.location|default:'' }}" placeholder="City, Country">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" placeholder="Your full address">{{ profile.address|default:'' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Social Links Section -->
+                <div class="form-section">
+                    <h2>Social Links</h2>
+                    <p>Connect your social media profiles</p>
+
+                    <div class="form-group">
+                        <label for="website">Website</label>
+                        <input type="url" id="website" name="website" value="{{ profile.website|default:'' }}" placeholder="https://yourwebsite.com">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="github">GitHub</label>
+                            <input type="text" id="github" name="github" value="{{ profile.github|default:'' }}" placeholder="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="linkedin">LinkedIn</label>
+                            <input type="text" id="linkedin" name="linkedin" value="{{ profile.linkedin|default:'' }}" placeholder="username">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="twitter">Twitter/X</label>
+                        <input type="text" id="twitter" name="twitter" value="{{ profile.twitter|default:'' }}" placeholder="@username">
+                    </div>
+                </div>
+
+                <!-- Preferences Section -->
+                <div class="form-section" id="preferences">
+                    <h2>Notification Preferences</h2>
+                    <p>Manage how you receive notifications</p>
+
+                    <div class="form-group">
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="notification_email" name="notification_email" {% if profile.notification_email %}checked{% endif %}>
+                            <label for="notification_email">Email Notifications</label>
+                        </div>
+                        <p style="margin-top: 4px; font-size: 0.85rem; color: var(--muted, #6b7280); margin-left: 32px;">
+                            Receive notifications via email
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="notification_push" name="notification_push" {% if profile.notification_push %}checked{% endif %}>
+                            <label for="notification_push">Push Notifications</label>
+                        </div>
+                        <p style="margin-top: 4px; font-size: 0.85rem; color: var(--muted, #6b7280); margin-left: 32px;">
+                            Receive push notifications in your browser
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simple navigation highlighting
+    document.querySelectorAll('.settings-nav-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('href').substring(1);
+            document.getElementById(target).scrollIntoView({ behavior: 'smooth' });
+            
+            document.querySelectorAll('.settings-nav-item').forEach(nav => nav.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
+{% endblock %}
+

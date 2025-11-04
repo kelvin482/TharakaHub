@@ -1,0 +1,98 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'jobs/css/create_assignment.css' %}">
+{% endblock %}
+
+{% block content %}
+<header class="create-header">
+    <h1>Create Assignment</h1>
+    <p>Post a new assignment for others to work on</p>
+</header>
+
+<div class="create-form-container">
+    <div class="create-card">
+        {% if error %}
+        <div class="error-message" style="color: red; padding: 10px; margin-bottom: 15px; background-color: #ffebee; border-radius: 4px;">
+            {{ error }}
+        </div>
+        {% endif %}
+        <form method="post" action="{% url 'jobs:create' %}" class="form-grid">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label class="form-label" for="title">Title</label>
+                <input type="text" id="title" name="title" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="department">Department</label>
+                <select id="department" name="department" class="form-select" required>
+                    <option value="">Select Department</option>
+                    <option value="computer-science">Computer Science</option>
+                    <option value="business">Business</option>
+                    <option value="education">Education</option>
+                    <option value="nursing">Nursing</option>
+                    <option value="engineering">Engineering</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="unit">Unit</label>
+                <select id="unit" name="unit" class="form-select">
+                    <option value="">Select Unit</option>
+                    <!-- Units will be populated via JavaScript based on department selection -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="price">Price (Ksh)</label>
+                <input type="number" id="price" name="price" class="form-input" min="500" step="100" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="deadline">Deadline</label>
+                <input type="datetime-local" id="deadline" name="deadline" class="form-input" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label class="form-label" for="description">Description</label>
+                <textarea id="description" name="description" class="form-textarea" required></textarea>
+            </div>
+
+            <div class="form-group full-width">
+                <button type="submit" class="submit-btn">Create Assignment</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{% static 'jobs/js/main.js' %}" defer></script>
+<script>
+const departmentUnits = {
+    'computer-science': ['Programming Fundamentals', 'Data Structures', 'Algorithms', 'Database Systems'],
+    'business': ['Marketing', 'Finance', 'Management', 'Economics'],
+    'education': ['Educational Psychology', 'Curriculum Development', 'Teaching Methods'],
+    'nursing': ['Patient Care', 'Pharmacology', 'Healthcare Ethics'],
+    'engineering': ['Circuit Design', 'Mechanics', 'Thermodynamics']
+};
+
+document.getElementById('department').addEventListener('change', function() {
+    const unitSelect = document.getElementById('unit');
+    unitSelect.innerHTML = '<option value="">Select Unit</option>';
+    
+    const units = departmentUnits[this.value] || [];
+    units.forEach(unit => {
+        const option = document.createElement('option');
+        option.value = unit.toLowerCase().replace(/\s+/g, '-');
+        option.textContent = unit;
+        unitSelect.appendChild(option);
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}
+
+

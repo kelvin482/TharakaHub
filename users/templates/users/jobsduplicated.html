@@ -1,0 +1,153 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'jobs/css/jobs.css' %}">
+{% endblock %}
+
+{% block content %}
+<header class="jobs-header">
+    <h1>Find Assignments</h1>
+    <p>Choose your department and discover relevant assignments</p>
+</header>
+
+<main class="departments">
+    <!-- Computer Science -->
+    <div class="department">
+        <div class="department-header">
+            <h2>Computer Science</h2>
+            <span class="icon">▼</span>
+        </div>
+        <div class="department-content">
+            <div class="assignments-grid">
+                <div class="assignment-card">
+                    <h3 class="assignment-title">Data Structures Assignment</h3>
+                    <div class="assignment-meta">
+                        <span class="assignment-price">Ksh 2,500</span>
+                        <span class="assignment-deadline">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            Due in 3 days
+                        </span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+                <!-- Add more assignment cards -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Business -->
+    <div class="department">
+        <div class="department-header">
+            <h2>Business</h2>
+            <span class="icon">▼</span>
+        </div>
+        <div class="department-content">
+            <div class="assignments-grid">
+                <div class="assignment-card">
+                    <h3 class="assignment-title">Marketing Strategy Analysis</h3>
+                    <div class="assignment-meta">
+                        <span class="assignment-price">Ksh 3,000</span>
+                        <span class="assignment-deadline">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            Due in 5 days
+                        </span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education -->
+    <div class="department">
+        <div class="department-header">
+            <h2>Education</h2>
+            <span class="icon">▼</span>
+        </div>
+        <div class="department-content">
+            <div class="assignments-grid">
+                <div class="assignment-card">
+                    <h3 class="assignment-title">Curriculum Development</h3>
+                    <div class="assignment-meta">
+                        <span class="assignment-price">Ksh 2,800</span>
+                        <span class="assignment-deadline">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            Due in 4 days
+                        </span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nursing -->
+    <div class="department">
+        <div class="department-header">
+            <h2>Nursing</h2>
+            <span class="icon">▼</span>
+        </div>
+        <div class="department-content">
+            <div class="assignments-grid">
+                <div class="assignment-card">
+                    <h3 class="assignment-title">Patient Care Study</h3>
+                    <div class="assignment-meta">
+                        <span class="assignment-price">Ksh 3,200</span>
+                        <span class="assignment-deadline">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            Due in 6 days
+                        </span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Engineering -->
+    <div class="department">
+        <div class="department-header">
+            <h2>Engineering</h2>
+            <span class="icon">▼</span>
+        </div>
+        <div class="department-content">
+            <div class="assignments-grid">
+                <div class="assignment-card">
+                    <h3 class="assignment-title">Circuit Design Project</h3>
+                    <div class="assignment-meta">
+                        <span class="assignment-price">Ksh 3,500</span>
+                        <span class="assignment-deadline">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            Due in 7 days
+                        </span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% block extra_js %}
+<script src="{% static 'jobs/js/main.js' %}" defer></script>
+<script>
+document.querySelectorAll('.department-header').forEach(header => {
+    header.addEventListener('click', () => {
+        const department = header.parentElement;
+        department.classList.toggle('active');
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}

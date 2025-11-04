@@ -1,0 +1,202 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'users/css/blog.css' %}">
+<style>
+    .section-wrap { padding: 24px; max-width: 1400px; margin: 0 auto; }
+    .section-title { font-size: 1.8rem; margin: 12px 0 8px; }
+    .section-sub { color: #6b7280; margin-bottom: 18px; }
+
+    .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+    .blog-type-card { background: #fff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.06); overflow: hidden; display: flex; flex-direction: column; }
+    .blog-type-card img { width: 100%; height: 140px; object-fit: cover; }
+    .blog-type-card .card-body { padding: 14px 16px; }
+    .blog-type-card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .blog-type-card ul { margin: 8px 0 0; padding-left: 18px; color: #374151; }
+    .blog-type-card li { margin: 4px 0; }
+
+    .prompts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .prompt-card { background: #0f172a; color: #e5e7eb; border-radius: 12px; padding: 14px; box-shadow: 0 6px 18px rgba(0,0,0,.12); position: relative; }
+    .prompt-card h4 { margin: 0 0 8px; color: #93c5fd; }
+    .prompt { white-space: pre-wrap; background: #111827; color: #e5e7eb; padding: 10px 12px; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .95rem; }
+    .copy-btn { position: absolute; top: 10px; right: 10px; background: #2563eb; color: #fff; border: none; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+
+    @media (max-width: 900px) { .section-wrap { padding: 16px; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="blog-header">
+    <div class="banner-content">
+        <h1 class="blog-title">Latest Articles</h1>
+        <p class="blog-subtitle">Stay updated with our latest insights and stories</p>
+    </div>
+</header>
+
+<div class="article-container">
+    <div class="posts-grid">
+        {% for post in posts %}
+        <article class="post-card">
+            {% cycle "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=1200&q=80" "https://images.unsplash.com/photo-1518644730709-0835105d9daa?w=1200&q=80" "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80" as blogimg silent %}
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
+            {% else %}
+            <img src="{{ blogimg }}" alt="{{ post.title }}" class="post-image">
+            {% endif %}
+            <div class="post-content">
+                <div class="post-category">{{ post.category }}</div>
+                <h3 class="post-title">
+                    <a href="{% url 'users:blog_detail' post.slug %}">{{ post.title }}</a>
+                </h3>
+                <p class="post-excerpt">{{ post.excerpt }}</p>
+                <div class="post-meta">
+                    <span class="post-date">{{ post.created_at|date:"F j, Y" }}</span>
+                    <span class="post-author">{{ post.author }}</span>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</div>
+
+<section class="section-wrap">
+    <h2 class="section-title">Types of Blogs for Your Website</h2>
+    <p class="section-sub">Hand-curated ideas with engaging angles, visuals, and story hooks.</p>
+
+    <div class="types-grid">
+        <article class="blog-type-card">
+            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=1200&q=80" alt="Freelance & Career Development">
+            <div class="card-body">
+                <h3>A. Freelance & Career Development</h3>
+                <ul>
+                    <li>How to start freelancing as a student</li>
+                    <li>Tips for balancing university and freelance work</li>
+                    <li>Portfolio building for beginners</li>
+                    <li>Freelance pricing strategies</li>
+                    <li>Productivity hacks for remote work</li>
+                </ul>
+            </div>
+        </article>
+
+        <article class="blog-type-card">
+            <img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80" alt="Web Development & Tech">
+            <div class="card-body">
+                <h3>B. Web Development & Tech</h3>
+                <ul>
+                    <li>Latest web development trends in 2025</li>
+                    <li>How to create interactive dashboards</li>
+                    <li>Using AI tools in web development</li>
+                    <li>Beginner’s guide to Django + React projects</li>
+                    <li>Tips for building responsive websites</li>
+                </ul>
+            </div>
+        </article>
+
+        <article class="blog-type-card">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80" alt="AI & Innovation">
+            <div class="card-body">
+                <h3>C. AI & Innovation</h3>
+                <ul>
+                    <li>How AI is transforming freelancing</li>
+                    <li>Best AI tools for web designers</li>
+                    <li>Step-by-step: Automating tasks using AI</li>
+                    <li>Future tech trends students should watch</li>
+                </ul>
+            </div>
+        </article>
+
+        <article class="blog-type-card">
+            <img src="https://images.unsplash.com/photo-1523246191915-43f03f7e3e05?w=1200&q=80" alt="Learning & Skills">
+            <div class="card-body">
+                <h3>D. Learning & Skills</h3>
+                <ul>
+                    <li>Best online courses for coding and design</li>
+                    <li>How to learn SEO effectively</li>
+                    <li>Portfolio projects that impress employers</li>
+                    <li>Tips for mastering a new programming language quickly</li>
+                </ul>
+            </div>
+        </article>
+
+        <article class="blog-type-card">
+            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&q=80" alt="Personal Growth & Productivity">
+            <div class="card-body">
+                <h3>E. Personal Growth & Productivity</h3>
+                <ul>
+                    <li>Daily routines for student freelancers</li>
+                    <li>Time management hacks for busy students</li>
+                    <li>Overcoming procrastination</li>
+                    <li>Journaling for career clarity</li>
+                </ul>
+            </div>
+        </article>
+
+        <article class="blog-type-card">
+            <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=80" alt="Inspiration & Case Studies">
+            <div class="card-body">
+                <h3>F. Inspiration & Case Studies</h3>
+                <ul>
+                    <li>Stories of successful student freelancers</li>
+                    <li>Project case studies: from idea to launch</li>
+                    <li>How I got my first freelance client</li>
+                    <li>Lessons learned from failed projects</li>
+                </ul>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="section-wrap">
+    <h2 class="section-title">Example AI Prompts to Generate Blog Posts</h2>
+    <p class="section-sub">Copy any prompt below and paste into your favorite AI tool.</p>
+    <div class="prompts">
+        <div class="prompt-card">
+            <button class="copy-btn" data-target="p1">Copy</button>
+            <h4>Freelancing Tips Blog</h4>
+            <div id="p1" class="prompt">Write a 1000-word blog for student freelancers on how to balance university studies with freelance work. Include real examples, tips, and common mistakes to avoid. Make it engaging and beginner-friendly.</div>
+        </div>
+        <div class="prompt-card">
+            <button class="copy-btn" data-target="p2">Copy</button>
+            <h4>Tech Tutorial Blog</h4>
+            <div id="p2" class="prompt">Write a blog explaining how to build a responsive web dashboard using HTML, CSS, JavaScript, and Django. Include step-by-step instructions, screenshots suggestions, and best practices for beginners.</div>
+        </div>
+        <div class="prompt-card">
+            <button class="copy-btn" data-target="p3">Copy</button>
+            <h4>AI in Freelancing Blog</h4>
+            <div id="p3" class="prompt">Write a blog about the top 10 AI tools every freelancer should know in 2025. Explain what each tool does, how it can save time, and real-world use cases.</div>
+        </div>
+        <div class="prompt-card">
+            <button class="copy-btn" data-target="p4">Copy</button>
+            <h4>Personal Productivity Blog</h4>
+            <div id="p4" class="prompt">Write a 1200-word blog for students on time management strategies for freelancers. Include morning routines, task prioritization, and tools that help with productivity.</div>
+        </div>
+        <div class="prompt-card">
+            <button class="copy-btn" data-target="p5">Copy</button>
+            <h4>Portfolio & Career Growth Blog</h4>
+            <div id="p5" class="prompt">Write a blog on how students can create a portfolio that attracts freelance clients. Include examples of projects to showcase, skills to highlight, and tips for presenting work online.</div>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            var btns = document.querySelectorAll('.copy-btn');
+            btns.forEach(function(btn){
+                btn.addEventListener('click', function(){
+                    var id = btn.getAttribute('data-target');
+                    var el = document.getElementById(id);
+                    if(!el) return;
+                    var range = document.createRange();
+                    range.selectNodeContents(el);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                    try { document.execCommand('copy'); btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent='Copy'; }, 1200); } catch(e) {}
+                    sel.removeAllRanges();
+                });
+            });
+        })();
+    </script>
+</section>
+{% endblock %}

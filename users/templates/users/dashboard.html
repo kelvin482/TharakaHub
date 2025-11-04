@@ -1,0 +1,200 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'users/css/dashboard.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'users/js/dashboard.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
+        <div class="sidebar-profile">
+            {% if user_profile.profile_picture %}
+            <img src="{{ user_profile.profile_picture.url }}" alt="Profile" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+            {% else %}
+            <div class="avatar">
+                {% if user_profile.first_name %}
+                    {{ user_profile.first_name|slice:":1"|upper }}
+                {% elif user.first_name %}
+                    {{ user.first_name|slice:":1"|upper }}
+                {% else %}
+                    {{ user.username|slice:":1"|upper }}
+                {% endif %}
+            </div>
+            {% endif %}
+            <div class="profile-info">
+                <div class="profile-name">
+                    {% if user_profile.first_name or user_profile.last_name %}
+                        {{ user_profile.get_full_name }}
+                    {% elif user.first_name or user.last_name %}
+                        {{ user.first_name }} {{ user.last_name }}
+                    {% else %}
+                        {{ user.username }}
+                    {% endif %}
+                </div>
+                <div class="profile-role">Freelancer</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="{% url 'users:dashboard' %}" class="nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{% url 'users:projects' %}" class="nav-item"><i class="fas fa-tasks"></i> Projects</a>
+            <a href="{% url 'users:clients' %}" class="nav-item"><i class="fas fa-users"></i> Clients</a>
+            <a href="{% url 'users:messages' %}" class="nav-item"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="{% url 'users:earnings' %}" class="nav-item"><i class="fas fa-wallet"></i> Earnings</a>
+            <a href="{% url 'users:portfolio' %}" class="nav-item"><i class="fas fa-briefcase"></i> Portfolio</a>
+            <a href="{% url 'users:settings' %}" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+            <a href="{% url 'users:logout' %}" class="nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </aside>
+
+    <!-- ===== Main Content ===== -->
+    <main class="main-panel">
+        <header class="dashboard-header">
+            <h1>Welcome back, {% if user_profile.first_name %}{{ user_profile.first_name }}{% elif user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %} 👋</h1>
+            <p class="dashboard-welcome">Here's a quick overview of your progress and stats.</p>
+        </header>
+
+        <section class="dashboard-content">
+
+            <!-- ===== Overview Cards ===== -->
+            <div class="overview-cards">
+                <div class="overview-card">
+                    <div class="card-label">Total Projects</div>
+                    <div class="card-value">{{ total_projects }}</div>
+                </div>
+                <div class="overview-card card-green">
+                    <div class="card-label">Total Earnings</div>
+                    <div class="card-value">Ksh {{ total_earnings }}</div>
+                </div>
+                <div class="overview-card card-blue">
+                    <div class="card-label">Ongoing Projects</div>
+                    <div class="card-value">{{ ongoing_projects }}</div>
+                </div>
+                <div class="overview-card card-gold">
+                    <div class="card-label">Average Rating</div>
+                    <div class="card-value">{{ avg_rating }} ★</div>
+                </div>
+            </div>
+
+            <!-- ===== Quick Actions ===== -->
+            <section class="quick-actions">
+                <button class="btn primary"><i class="fas fa-file-alt"></i> Create Proposal</button>
+                <button class="btn success"><i class="fas fa-money-bill"></i> Withdraw Funds</button>
+                <button class="btn warning"><i class="fas fa-user-clock"></i> Update Availability</button>
+                <button class="btn ghost"><i class="fas fa-file-invoice"></i> Generate Invoice</button>
+            </section>
+
+            <!-- ===== Earnings Chart ===== -->
+            <section class="analytics-section">
+                <h3 class="section-title">Earnings & Performance</h3>
+                <canvas id="earningsChart" height="100"></canvas>
+            </section>
+
+            <!-- ===== Messages ===== -->
+            <section class="messages-section">
+                <h3 class="section-title">Recent Messages</h3>
+                <div class="messages-list">
+                    {% for chat in inbox_messages %}
+                    <div class="message-card">
+                        <strong>{{ chat.sender }}</strong>: {{ chat.preview }}
+                        <span class="muted small">{{ chat.timestamp }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="muted">No new messages.</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- ===== Portfolio ===== -->
+            <section class="portfolio-section">
+                <h3 class="section-title">Portfolio</h3>
+                <button class="floating-btn" title="Add New Project"><i class="fas fa-plus"></i></button>
+                <div class="portfolio-grid">
+                    {% for item in portfolio %}
+                    <div class="portfolio-card">
+                        <img src="{{ item.image_url }}" alt="{{ item.title }}">
+                        <div class="portfolio-info">
+                            <h4>{{ item.title }}</h4>
+                            <p class="muted">{{ item.tags }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="muted">No portfolio items yet.</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- ===== Calendar / Task Tracker ===== -->
+            <section class="calendar-section">
+                <h3 class="section-title">Upcoming Tasks & Deadlines</h3>
+                <ul class="calendar-list">
+                    {% for task in tasks %}
+                    <li><strong>{{ task.title }}</strong> — due {{ task.due }}</li>
+                    {% empty %}
+                    <p class="muted">No upcoming deadlines.</p>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <!-- ===== Testimonials ===== -->
+            <section class="feedback-section">
+                <h3 class="section-title">Client Testimonials</h3>
+                <div class="testimonial-slider">
+                    {% for feedback in testimonials %}
+                    <blockquote class="testimonial">
+                        “{{ feedback.comment }}”
+                        <footer>— {{ feedback.client_name }}, ⭐ {{ feedback.rating }}</footer>
+                    </blockquote>
+                    {% empty %}
+                    <p class="muted">No feedback yet.</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- ===== Current Projects ===== -->
+            <section class="projects-section">
+                <h3 class="section-title">Current Projects</h3>
+                <div class="projects-grid">
+                    {% for p in projects %}
+                    <div class="project-card">
+                        <div class="proj-row">
+                            <div class="proj-name">{{ p.name }}</div>
+                            <div class="proj-client muted">{{ p.client }}</div>
+                        </div>
+                        <div class="proj-row small">
+                            <div class="proj-status">
+                                {% if p.status == 'In Progress' %}
+                                    <span class="status badge-blue">{{ p.status }}</span>
+                                {% elif p.status == 'Completed' %}
+                                    <span class="status badge-green">{{ p.status }}</span>
+                                {% else %}
+                                    <span class="status muted">{{ p.status }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="proj-deadline muted">Due: {{ p.deadline }}</div>
+                        </div>
+                        <div class="proj-row">
+                            <div class="proj-payment">{{ p.payment_status }}</div>
+                            <div class="proj-actions"><a class="btn ghost" href="#">View</a></div>
+                        </div>
+                        <div class="proj-progress">
+                            <div class="proj-progress-fill" data-progress="{{ p.progress }}"></div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="muted">No active projects at the moment.</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+        </section>
+    </main>
+</div>
+{% endblock %}

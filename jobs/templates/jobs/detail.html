@@ -1,0 +1,22 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Job Detail | TharakaHub{% endblock %}
+
+{% block content %}
+<section class="section">
+    <img class="card-media" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&q=80" alt="job cover">
+    <span class="department-tag">{{ job.department }}</span>
+    <h1 class="section-title">{{ job.title }}</h1>
+    <p class="post-excerpt">{{ job.description }}</p>
+    <div class="post-meta" style="margin-top:8px;">
+        <span>Status: {{ job.get_status_display }}</span>
+        <span>Due: {{ job.deadline }}</span>
+        <span>Budget: Ksh {{ job.price }}</span>
+    </div>
+    <div style="margin-top:16px;">
+        <a class="read-link" href="{% url 'jobs:list' %}">← Back to jobs</a>
+    </div>
+</section>
+{% endblock %}
+

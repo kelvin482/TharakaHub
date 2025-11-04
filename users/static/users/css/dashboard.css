@@ -1,0 +1,458 @@
+/* ==========================================
+   🌐 Modern Dashboard Theme (Updated)
+   Designed for Django University Projects
+   Author: Kelvin Kiambi
+========================================== */
+
+/* ===========================
+   Root Theme Variables
+=========================== */
+:root {
+  --primary: #007bff;
+  --primary-dark: #002b5b;
+  --accent: #f6c90e;
+  --success: #22c55e;
+  --warning: #facc15;
+  --danger: #ef4444;
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --text-light: #f3f3f3;
+  --muted: #6b7280;
+  --gradient: linear-gradient(135deg, #007bff, #00b4d8);
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(0,0,0,0.08);
+  --transition: all 0.3s ease-in-out;
+  --nav-height: 60px;
+}
+
+/* ===========================
+   Base Resets
+=========================== */
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+/* ===========================
+   Dashboard Header
+=========================== */
+.dashboard-header {
+  padding: 48px 24px;
+  background: var(--gradient);
+  color: #fff;
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.dashboard-welcome {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+/* ===========================
+   Dashboard Layout
+=========================== */
+.dashboard-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 16px 32px;
+  max-width: 100%;
+  margin: 0 0 48px 0;
+  box-sizing: border-box;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background: var(--primary-dark);
+  color: var(--text-light);
+  border-radius: var(--radius);
+  padding: 20px;
+  min-height: calc(100vh - var(--nav-height) - 80px);
+  position: sticky;
+  top: calc(var(--nav-height) + 16px);
+  box-shadow: var(--shadow);
+}
+
+.sidebar-profile {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.profile-info .profile-name {
+  font-weight: 700;
+}
+
+.profile-role {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.8);
+}
+
+/* Sidebar Nav */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+
+.sidebar-nav .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-light);
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.sidebar-nav .nav-item i {
+  width: 18px;
+  text-align: center;
+}
+
+.sidebar-nav .nav-item:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.sidebar-nav .nav-item.active {
+  background: var(--accent);
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+/* Main Panel */
+.main-panel {
+  flex: 1;
+  background: var(--bg);
+  padding: 18px;
+  border-radius: var(--radius);
+  min-height: calc(100vh - var(--nav-height) - 80px);
+}
+
+/* ===========================
+   Overview Cards
+=========================== */
+.overview-cards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.overview-card {
+  flex: 1;
+  background: var(--card);
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.overview-card:hover {
+  transform: translateY(-4px);
+}
+
+.overview-card .card-label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.overview-card .card-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.card-blue { border-left: 4px solid #007bff; }
+.card-green { border-left: 4px solid #22c55e; }
+.card-gold { border-left: 4px solid #f6c90e; }
+
+/* ===========================
+   Quick Actions
+=========================== */
+.quick-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 16px 0 32px;
+}
+
+.quick-actions .btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+.quick-actions .btn.primary { background: var(--gradient); color: white; }
+.quick-actions .btn.success { background: var(--success); color: white; }
+.quick-actions .btn.warning { background: var(--warning); color: #222; }
+.quick-actions .btn.ghost { background: #fff; color: var(--text); border: 1px solid #ddd; }
+
+.quick-actions .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+/* ===========================
+   Analytics Section
+=========================== */
+.analytics-section {
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+}
+
+/* ===========================
+   Messages Section
+=========================== */
+.messages-section {
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+}
+
+.message-card {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.message-card:last-child { border-bottom: none; }
+
+.message-card strong {
+  color: var(--primary-dark);
+}
+
+.message-card .muted {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ===========================
+   Portfolio Section
+=========================== */
+.portfolio-section {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.floating-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--gradient);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.floating-btn:hover {
+  transform: scale(1.05);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.portfolio-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.portfolio-card:hover {
+  transform: translateY(-3px);
+}
+
+.portfolio-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.portfolio-info {
+  padding: 12px;
+}
+
+/* ===========================
+   Calendar / Task Tracker
+=========================== */
+.calendar-section {
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 32px;
+}
+
+.calendar-list {
+  list-style: none;
+  padding: 0;
+}
+
+.calendar-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* ===========================
+   Testimonials
+=========================== */
+.feedback-section {
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 32px;
+}
+
+.testimonial {
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.testimonial footer {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* ===========================
+   Projects Grid
+=========================== */
+.projects-section {
+  margin-top: 28px;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.project-card {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+}
+
+.proj-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.proj-name {
+  font-weight: 700;
+}
+
+.proj-client,
+.proj-deadline {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.proj-payment {
+  font-weight: 600;
+}
+
+.proj-actions .btn {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+}
+
+.proj-progress {
+  height: 8px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.proj-progress-fill {
+  height: 100%;
+  background: var(--primary);
+  width: 0;
+  transition: width .4s ease;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 900px) {
+  .dashboard-layout { flex-direction: column; padding: 12px; }
+  .sidebar { width: 100%; position: relative; top: 0; }
+  .overview-cards { flex-direction: column; }
+  .quick-actions { flex-direction: column; }
+  .quick-actions .btn { width: 100%; }
+}
+
+/* Wider desktop optimizations */
+@media (min-width: 1400px) {
+  .overview-card { min-width: 260px; }
+  .analytics-section, .messages-section, .calendar-section, .feedback-section { padding: 28px; }
+  .projects-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+}

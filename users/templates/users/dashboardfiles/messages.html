@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: #f4f6f9; display: flex; min-height: 100vh; }
+        .dashboard-container { display: flex; width: 100%; }
+        .sidebar { width: 230px; background-color: #2c3e50; color: white; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        .sidebar h2 { text-align: center; margin-bottom: 20px; color: #ecf0f1; }
+        .sidebar-nav { display: flex; flex-direction: column; }
+        .nav-item { color: #bdc3c7; text-decoration: none; padding: 10px 15px; border-radius: 8px; margin-bottom: 8px; transition: background 0.3s; }
+        .nav-item:hover, .nav-item.active { background-color: #34495e; color: #fff; }
+        .nav-item i { margin-right: 8px; }
+
+        .main-content { flex-grow: 1; padding: 30px 40px; display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; width: 100%; }
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .search { display: flex; gap: 10px; align-items: center; }
+        .search input { padding: 8px 12px; border-radius: 8px; border: 1px solid #ccc; outline: none; font-size: 14px; }
+        .filter-select, .action-btn { padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; background: white; cursor: pointer; }
+
+        .messaging { display: grid; grid-template-columns: 360px 1fr; gap: 24px; min-height: 70vh; }
+        .inbox { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; display: flex; flex-direction: column; }
+        .inbox-header { padding: 12px 16px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .conversation { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f0f0f0; text-decoration: none; color: #2c3e50; background: #fff; }
+        .conversation:hover { background: #f8fafc; }
+        .conversation.active { background: #eef4ff; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: #e1e8f0; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        .conv-main { flex: 1; }
+        .conv-row { display: flex; justify-content: space-between; align-items: center; }
+        .conv-name { font-weight: 600; }
+        .conv-preview { color: #7f8c8d; font-size: 13px; margin-top: 4px; }
+        .badge { background: #3498db; color: white; border-radius: 999px; padding: 2px 8px; font-size: 12px; }
+
+        .chat { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: grid; grid-template-rows: auto 1fr auto; }
+        .chat-header { padding: 14px 18px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .msg { max-width: 70%; padding: 10px 14px; border-radius: 12px; position: relative; }
+        .left { align-self: flex-start; background: #f3f4f6; }
+        .right { align-self: flex-end; background: #3498db; color: white; }
+        .timestamp { font-size: 12px; color: #7f8c8d; margin-top: 4px; }
+        .typing { display: inline-flex; gap: 4px; align-items: center; color: #7f8c8d; font-size: 13px; }
+        .dot { width: 6px; height: 6px; background: #7f8c8d; border-radius: 50%; animation: blink 1.2s infinite ease-in-out; }
+        .dot:nth-child(2){ animation-delay: .2s; } .dot:nth-child(3){ animation-delay: .4s; }
+        @keyframes blink { 0%, 80%, 100% { opacity: .2 } 40% { opacity: 1 } }
+
+        .chat-input { padding: 12px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .chat-input input[type="text"] { flex: 1; padding: 10px 12px; border: 1px solid #ccc; border-radius: 10px; }
+        .attach { border: 1px dashed #bbb; background: #fff; color: #2c3e50; }
+        .send { background: #27ae60; color: white; border: none; padding: 10px 16px; border-radius: 10px; cursor: pointer; }
+        .send:hover { background: #219150; }
+        @media (max-width: 900px) {
+            .dashboard-container { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .messaging { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div>
+                <h2>My Dashboard</h2>
+                <nav class="sidebar-nav">
+                    <a href="{% url 'users:dashboard' %}" class="nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="{% url 'users:projects' %}" class="nav-item"><i class="fas fa-tasks"></i> Projects</a>
+                    <a href="{% url 'users:clients' %}" class="nav-item"><i class="fas fa-users"></i> Clients</a>
+                    <a href="{% url 'users:messages' %}" class="nav-item active"><i class="fas fa-envelope"></i> Messages</a>
+                    <a href="{% url 'users:earnings' %}" class="nav-item"><i class="fas fa-wallet"></i> Earnings</a>
+                    <a href="{% url 'users:portfolio' %}" class="nav-item"><i class="fas fa-briefcase"></i> Portfolio</a>
+                    <a href="{% url 'users:settings' %}" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+                </nav>
+            </div>
+            <a href="{% url 'users:logout' %}" class="nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <h1>Messages</h1>
+                <div class="search">
+                    <input type="text" placeholder="Search by client or project">
+                    <select class="filter-select">
+                        <option>All</option>
+                        <option>Unread</option>
+                        <option>Starred</option>
+                        <option>Archived</option>
+                    </select>
+                    <button class="action-btn"><i class="fas fa-bell"></i> Alerts</button>
+                </div>
+            </div>
+
+            <section class="messaging">
+                <aside class="inbox">
+                    <div class="inbox-header">
+                        <strong>Inbox</strong>
+                        <span class="badge">3</span>
+                    </div>
+
+                    <a href="#" class="conversation active">
+                        <div class="avatar">A</div>
+                        <div class="conv-main">
+                            <div class="conv-row">
+                                <div class="conv-name">Alice</div>
+                                <div class="timestamp">10:24</div>
+                            </div>
+                            <div class="conv-preview">Sure, I can share the files…</div>
+                        </div>
+                        <span class="badge">1</span>
+                    </a>
+
+                    <a href="#" class="conversation">
+                        <div class="avatar">B</div>
+                        <div class="conv-main">
+                            <div class="conv-row">
+                                <div class="conv-name">Beta Co</div>
+                                <div class="timestamp">Yesterday</div>
+                            </div>
+                            <div class="conv-preview">Let’s schedule a quick call.</div>
+                        </div>
+                    </a>
+
+                    <a href="#" class="conversation">
+                        <div class="avatar">G</div>
+                        <div class="conv-main">
+                            <div class="conv-row">
+                                <div class="conv-name">Gamma Ltd</div>
+                                <div class="timestamp">Mon</div>
+                            </div>
+                            <div class="conv-preview">Invoice received, thanks!</div>
+                        </div>
+                    </a>
+                </aside>
+
+                <section class="chat">
+                    <div class="chat-header">
+                        <div><strong>Alice</strong> • Project X</div>
+                        <div class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span> typing…</div>
+                    </div>
+                    <div class="chat-body" id="chatBody">
+                        <div class="msg left">Hi! Could you share the latest draft?<div class="timestamp">10:18</div></div>
+                        <div class="msg right">Sure, sending it now.<div class="timestamp">10:20</div></div>
+                        <div class="msg left">Great, thanks!<div class="timestamp">10:22</div></div>
+                    </div>
+                    <form class="chat-input" onsubmit="return sendMessage(event)">
+                        <label class="action-btn attach" title="Attach file">
+                            <i class="fas fa-paperclip"></i>
+                            <input type="file" hidden>
+                        </label>
+                        <input type="text" id="messageInput" placeholder="Write a message…">
+                        <button type="submit" class="send"><i class="fas fa-paper-plane"></i> Send</button>
+                    </form>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function sendMessage(e){
+            e.preventDefault();
+            var input = document.getElementById('messageInput');
+            var text = input.value.trim();
+            if(!text) return false;
+            var body = document.getElementById('chatBody');
+            var msg = document.createElement('div');
+            msg.className = 'msg right';
+            msg.textContent = text;
+            var ts = document.createElement('div');
+            ts.className = 'timestamp';
+            ts.textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            msg.appendChild(ts);
+            body.appendChild(msg);
+            body.scrollTop = body.scrollHeight;
+            input.value = '';
+            return false;
+        }
+    </script>
+</body>
+</html>
+

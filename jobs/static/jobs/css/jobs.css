@@ -1,0 +1,159 @@
+/* copied from users/static/users/css/jobs.css */
+.jobs-header {
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--gradient);
+  color: white;
+  margin-bottom: 32px;
+}
+
+.jobs-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 16px;
+  font-weight: 600;
+}
+
+.jobs-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.departments {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.department {
+  margin-bottom: 24px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.department:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 48px rgba(0,119,255,0.12);
+}
+
+.department-header {
+  padding: 20px 24px;
+  background: var(--gradient);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.department-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.department-header .icon {
+  transition: transform 0.3s ease;
+}
+
+.department.active .department-header .icon {
+  transform: rotate(180deg);
+}
+
+.department-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.department.active .department-content {
+  max-height: 2000px;
+}
+
+.assignments-grid {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.assignment-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  border: 1px solid rgba(0,119,255,0.08);
+  transition: var(--transition);
+}
+
+.assignment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,119,255,0.08);
+}
+
+.assignment-title {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.assignment-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.assignment-price {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.assignment-deadline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.apply-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--gradient);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.apply-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,119,255,0.16);
+}
+
+@media (max-width: 768px) {
+  .jobs-header h1 {
+    font-size: 2rem;
+  }
+  
+  .assignments-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .department-header {
+    padding: 16px 20px;
+  }
+  
+  .department-content {
+    padding: 20px;
+  }
+}
+

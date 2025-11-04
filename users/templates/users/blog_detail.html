@@ -1,0 +1,74 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'users/css/blog.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="blog-banner">
+    <div class="banner-content">
+        <h1 class="blog-title">{{ post.title }}</h1>
+        <div class="blog-meta">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                {{ post.author }}
+            </span>
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                {{ post.created_at|date:"F j, Y" }}
+            </span>
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                    <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+                {{ post.category }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="article-container">
+    <article class="article-content">
+        {{ post.content|safe }}
+        
+        <div class="gradient-divider"></div>
+        
+        <div class="author-section">
+            <h3>About the Author</h3>
+            <p>{{ post.author.bio }}</p>
+        </div>
+    </article>
+</div>
+
+<section class="related-posts">
+    <div class="related-header">
+        <h2 class="related-title">Related Articles</h2>
+        <p class="related-subtitle">You might also like these posts</p>
+    </div>
+    
+    <div class="posts-grid">
+        {% for related_post in related_posts %}
+        <article class="post-card">
+            {% if related_post.image %}
+            <img src="{{ related_post.image.url }}" alt="{{ related_post.title }}" class="post-image">
+            {% endif %}
+            <div class="post-content">
+                <div class="post-category">{{ related_post.category }}</div>
+                <h3 class="post-title">{{ related_post.title }}</h3>
+                <p class="post-excerpt">{{ related_post.excerpt }}</p>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
