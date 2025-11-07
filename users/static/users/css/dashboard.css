@@ -456,3 +456,105 @@ body {
   .analytics-section, .messages-section, .calendar-section, .feedback-section { padding: 28px; }
   .projects-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 }
+
+/* application dashboard update */
+/* dashboard.css */
+.btn-success {
+  background-color: #16a34a;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-success:hover { background-color: #15803d; }
+.btn-danger:hover { background-color: #b91c1c; }
+
+/* ===========================
+   Applications & Incoming Sections
+   (scoped styles to avoid conflicts)
+=========================== */
+.applications-section,
+.incoming-section {
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+}
+
+.applications-section .section-title,
+.incoming-section .section-title {
+  margin: 0 0 16px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.incoming-list { display: flex; flex-direction: column; gap: 12px; }
+
+.incoming-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.incoming-card .small { font-size: 0.9rem; color: var(--muted); }
+
+.incoming-actions { display: flex; gap: 10px; margin-top: 6px; }
+
+/* Generic small buttons used in incoming actions */
+.btn {
+  appearance: none;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+.btn.btn-sm { padding: 8px 12px; font-size: 0.92rem; }
+
+.btn.success { background: var(--success); color: #fff; }
+.btn.success:hover { filter: brightness(0.95); }
+
+.btn.danger { background: var(--danger); color: #fff; }
+.btn.danger:hover { filter: brightness(0.95); }
+
+/* Status badges */
+.status { padding: 2px 8px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; }
+.status.pending { background: #fff7ed; color: #9a3412; border: 1px solid #fed7aa; }
+.status.accepted { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.status.declined { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+/* Fancy pill buttons for Accept / Decline */
+.btn.pill { border-radius: 999px; padding: 10px 18px; letter-spacing: 0.2px; }
+.btn.accept {
+  background: linear-gradient(135deg, #10b981, #22c55e);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16,185,129,0.25);
+}
+.btn.accept:hover { filter: brightness(0.96); transform: translateY(-2px); }
+
+.btn.decline {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(239,68,68,0.25);
+}
+.btn.decline:hover { filter: brightness(0.96); transform: translateY(-2px); }

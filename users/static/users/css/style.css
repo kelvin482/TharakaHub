@@ -398,3 +398,10 @@ body { font-size: 16px; }
     grid-column: 1 / -1;
   }
 }
+
+/* application style message */
+.messages-wrapper { max-width: 1000px; margin: 16px auto; padding: 0 20px; }
+.message { padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-weight: 600; }
+.message.success { background: #ecfdf5; color: #065f46; border: 1px solid #bbf7d0; }
+.message.error { background: #ffefef; color: #7f1d1d; border: 1px solid #fecaca; }
+.message.info { background: #eef2ff; color: #1e3a8a; border: 1px solid #c7d2fe; }

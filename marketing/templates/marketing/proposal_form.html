@@ -1,0 +1,48 @@
+{% if proposal_form %}
+  <form id="proposalForm" method="post" action="{% url 'marketing:proposal_create' job.pk %}" class="proposal-form">
+    {% csrf_token %}
+    
+    {% if proposal_form.non_field_errors %}
+      <div class="alert alert-error">
+        {{ proposal_form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <div class="form-field">
+      <label for="{{ proposal_form.message.id_for_label }}">
+        Your Proposal Message <span class="required">*</span>
+      </label>
+      {{ proposal_form.message }}
+      {% if proposal_form.message.errors %}
+        <div class="field-error">{{ proposal_form.message.errors }}</div>
+      {% endif %}
+      <small class="field-hint">
+        Explain why you're a good fit, your approach, and relevant experience. Be specific and professional.
+      </small>
+    </div>
+
+    <div class="proposal-details-grid">
+      <div class="form-field">
+        <label for="{{ proposal_form.price.id_for_label }}">{{ proposal_form.price.label }}</label>
+        {{ proposal_form.price }}
+        {% if proposal_form.price.errors %}
+          <div class="field-error">{{ proposal_form.price.errors }}</div>
+        {% endif %}
+        <small class="field-hint">Your proposed price</small>
+      </div>
+
+      <div class="form-field">
+        <label for="{{ proposal_form.eta_days.id_for_label }}">{{ proposal_form.eta_days.label }}</label>
+        {{ proposal_form.eta_days }}
+        {% if proposal_form.eta_days.errors %}
+          <div class="field-error">{{ proposal_form.eta_days.errors }}</div>
+        {% endif %}
+        <small class="field-hint">Estimated days to complete</small>
+      </div>
+    </div>
+
+    <button class="m-btn btn-primary-large btn-full-width" type="submit">
+      <span>✉️</span> Send Proposal
+    </button>
+  </form>
+{% endif %}

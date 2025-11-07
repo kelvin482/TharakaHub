@@ -8,7 +8,11 @@ from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from django.utils import timezone
 from jobs.models import Job
-from .models import Profile
+from .models import Profile, UserProject
+
+#application part
+from django.db import models
+from jobs.models import Application  # ensure import path is correct
 
 
 def register(request):
@@ -278,7 +282,71 @@ def blog_detail(request, slug):
   
 @login_required
 def projects(request):
-    return render(request, 'users/projects.html')
+    user = request.user
+    # Handle new project creation (POST to same endpoint)
+    if request.method == 'POST':
+        title = (request.POST.get('title') or '').strip()
+        description = (request.POST.get('description') or '').strip()
+        try:
+            progress = int(request.POST.get('progress', '0'))
+        except Exception:
+            progress = 0
+        progress = max(0, min(100, progress))
+        # Derive status for convenience; user-supplied status is optional
+        if progress >= 100:
+            status = 'Completed'
+        elif progress <= 0:
+            status = 'Pending'
+        else:
+            status = 'In Progress'
+        if title:
+            UserProject.objects.create(
+                owner=user,
+                title=title,
+                description=description,
+                progress=progress,
+                status=status,
+            )
+    jobs_qs = (
+        Job.objects
+        .filter(models.Q(assignee=user) | models.Q(poster=user))
+        .order_by('-updated_at')
+    )
+
+    def status_to_progress(status):
+        if status == Job.Status.COMPLETED:
+            return 100
+        if status == Job.Status.IN_PROGRESS:
+            return 60
+        if status == Job.Status.POSTED:
+            return 10
+        return 0
+
+    # Personal dashboard projects (user created)
+    user_projects = [
+        {
+            'title': p.title,
+            'description': p.description,
+            'progress': p.progress,
+            'status': p.status,
+        }
+        for p in UserProject.objects.filter(owner=user)
+    ]
+
+    projects = [
+        {
+            'title': job.title,
+            'description': job.description[:160] + ('…' if len(job.description) > 160 else ''),
+            'progress': status_to_progress(job.status),
+            'status': job.get_status_display(),
+        }
+        for job in jobs_qs
+    ]
+
+    # Merge user-created projects first, then job-derived
+    all_projects = user_projects + projects
+
+    return render(request, 'users/dashboardfiles/projects.html', {'projects': all_projects})
 
 @login_required
 def clients(request):
@@ -341,15 +409,84 @@ def clients(request):
 
 @login_required
 def messages_view(request):
-    return render(request, 'users/dashboardfiles/messages.html')
+    user = request.user
+    apps = (
+        Application.objects
+        .filter(models.Q(applicant=user) | models.Q(job__poster=user))
+        .select_related('job', 'applicant', 'job__poster')
+        .order_by('-submitted_at')[:20]
+    )
+
+    inbox_messages = []
+    for app in apps:
+        counterpart = app.job.poster if app.applicant == user else app.applicant
+        inbox_messages.append({
+            'sender': counterpart.get_full_name() or counterpart.username,
+            'preview': (app.cover_letter or f"Application for {app.job.title}")[:60],
+            'timestamp': app.submitted_at.strftime('%Y-%m-%d %H:%M'),
+        })
+
+    return render(request, 'users/dashboardfiles/messages.html', {'inbox_messages': inbox_messages})
 
 @login_required
 def earnings(request):
-    return render(request, 'users/dashboardfiles/earnings.html')
+    user = request.user
+    tz_now = timezone.now()
+    month_start = tz_now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+    assigned_jobs = Job.objects.filter(assignee=user)
+
+    total_this_month = (
+        assigned_jobs
+        .filter(status=Job.Status.COMPLETED, updated_at__gte=month_start)
+        .aggregate(s=models.Sum('price'))['s'] or 0
+    )
+    pending_total = (
+        assigned_jobs
+        .filter(status__in=[Job.Status.POSTED, Job.Status.IN_PROGRESS])
+        .aggregate(s=models.Sum('price'))['s'] or 0
+    )
+
+    withdrawn = 0
+    available_balance = max((assigned_jobs.filter(status=Job.Status.COMPLETED)
+                              .aggregate(s=models.Sum('price'))['s'] or 0) - withdrawn, 0)
+
+    transactions = [
+        {
+            'date': j.updated_at.date(),
+            'client': j.poster.get_full_name() or j.poster.username,
+            'project': j.title,
+            'amount': j.price,
+            'status': 'Paid' if j.status == Job.Status.COMPLETED else 'Pending',
+            'method': 'Bank',
+        }
+        for j in assigned_jobs.order_by('-updated_at')[:20]
+    ]
+
+    context = {
+        'total_earnings_month': total_this_month,
+        'pending_payments': pending_total,
+        'withdrawn_total': withdrawn,
+        'available_balance': available_balance,
+        'transactions': transactions,
+    }
+
+    return render(request, 'users/dashboardfiles/earnings.html', context)
 
 @login_required
 def portfolio(request):
-    return render(request, 'users/dashboardfiles/portfolio.html')
+    user = request.user
+    completed = Job.objects.filter(assignee=user, status=Job.Status.COMPLETED).order_by('-updated_at')
+    portfolio_items = [
+        {
+            'title': j.title,
+            'tags': [j.department, j.unit] if j.unit else [j.department],
+            'completed_at': j.updated_at.date(),
+            'image_url': None,
+        }
+        for j in completed[:12]
+    ]
+    return render(request, 'users/dashboardfiles/portfolio.html', {'portfolio': portfolio_items})
 
 @login_required
 def settings(request):
@@ -469,3 +606,65 @@ def clients_view(request):
     }
     
     return render(request, 'users/dashboardfiles/clients.html', context)
+
+#application part...
+@login_required
+def dashboard(request):
+    user = request.user
+
+    # As applicant - counts by status
+    stats = Application.objects.filter(applicant=user).values('status').annotate(count=models.Count('id'))
+    counts = {'PENDING': 0, 'ACTIVE': 0, 'DECLINED': 0}
+    total_applied = 0
+    for item in stats:
+        counts[item['status']] = item['count']
+        total_applied += item['count']
+
+     #dashboard view to supply incoming applications
+       
+@login_required
+def dashboard(request):
+    user = request.user
+    # Applicant-side: compute counts and list
+    my_applications = Application.objects.filter(applicant=user)
+    stats = (
+        my_applications
+        .values('status')
+        .annotate(count=models.Count('id'))
+    )
+    counts = {'PENDING': 0, 'ACTIVE': 0, 'DECLINED': 0}
+    total_applied = 0
+    for item in stats:
+        status_key = item['status']
+        # Map model's ACCEPTED to UI's ACTIVE label without changing templates
+        if status_key == 'ACCEPTED':
+            counts['ACTIVE'] = item['count']
+        else:
+            counts[status_key] = item['count']
+        total_applied += item['count']
+
+    # Creator-side: incoming applications for jobs the user posted
+    incoming_applications = Application.objects.filter(job__poster=user).select_related('job', 'applicant')
+
+    context = {
+        # preserve both names to avoid template mismatches
+        'my_applications': my_applications,
+        'your_applications': my_applications,
+        'incoming_applications': incoming_applications,
+        'application_counts': counts,
+        'total_applied': total_applied,
+    }
+
+    return render(request, 'users/dashboard.html', context)
+
+    # If user is a creator: list of incoming applications
+    incoming_apps = Application.objects.filter(job__poster=user).select_related('job', 'applicant')
+
+
+    context = {
+        # existing context...
+        'application_counts': counts,
+        'total_applied': total_applied,
+        'incoming_applications': incoming_apps,
+    }
+    return render(request, 'users/dashboard.html', context)

@@ -1,0 +1,124 @@
+{% extends 'marketing/base_marketing.html' %}
+{% block title %}Create Marketing Job{% endblock %}
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h1>Create Marketing Job</h1>
+      <p class="subtitle">Post your service needs and receive proposals from qualified providers</p>
+    </div>
+  </div>
+
+  <div class="m-card form-card">
+    <form method="post" class="job-form">
+      {% csrf_token %}
+      
+      {% if form.non_field_errors %}
+        <div class="alert alert-error">
+          <strong>⚠️ Please fix the following errors:</strong>
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <div class="form-section">
+        <h3 class="section-title">Basic Information</h3>
+        <div class="m-form-grid">
+          <div class="form-field">
+            <label for="{{ form.title.id_for_label }}">
+              {{ form.title.label }} <span class="required">*</span>
+            </label>
+            {{ form.title }}
+            {% if form.title.errors %}
+              <div class="field-error">{{ form.title.errors }}</div>
+            {% endif %}
+            <small class="field-hint">Be specific and clear about what you need</small>
+          </div>
+
+          <div class="form-field">
+            <label for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+            {{ form.category }}
+            {% if form.category.errors %}
+              <div class="field-error">{{ form.category.errors }}</div>
+            {% endif %}
+            <small class="field-hint">Select the most relevant category</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">Project Details</h3>
+        <div class="form-field full-width">
+          <label for="{{ form.description.id_for_label }}">
+            {{ form.description.label }} <span class="required">*</span>
+          </label>
+          {{ form.description }}
+          {% if form.description.errors %}
+            <div class="field-error">{{ form.description.errors }}</div>
+          {% endif %}
+          <small class="field-hint">
+            Provide detailed information about your project. Our AI will analyze your description and suggest a category automatically.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">Budget & Location</h3>
+        <div class="m-form-grid">
+          <div class="form-field">
+            <label for="{{ form.budget_min.id_for_label }}">{{ form.budget_min.label }}</label>
+            {{ form.budget_min }}
+            {% if form.budget_min.errors %}
+              <div class="field-error">{{ form.budget_min.errors }}</div>
+            {% endif %}
+            <small class="field-hint">Minimum budget (optional)</small>
+          </div>
+
+          <div class="form-field">
+            <label for="{{ form.budget_max.id_for_label }}">{{ form.budget_max.label }}</label>
+            {{ form.budget_max }}
+            {% if form.budget_max.errors %}
+              <div class="field-error">{{ form.budget_max.errors }}</div>
+            {% endif %}
+            <small class="field-hint">Maximum budget (optional)</small>
+          </div>
+
+          <div class="form-field">
+            <label for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
+            {{ form.location }}
+            {% if form.location.errors %}
+              <div class="field-error">{{ form.location.errors }}</div>
+            {% endif %}
+            <small class="field-hint">e.g., Remote, New York, London</small>
+          </div>
+
+          <div class="form-field">
+            <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+            {{ form.status }}
+            {% if form.status.errors %}
+              <div class="field-error">{{ form.status.errors }}</div>
+            {% endif %}
+            <small class="field-hint">Choose 'Open' to accept proposals</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">Tags & Keywords</h3>
+        <div class="form-field full-width">
+          <label for="{{ form.tags.id_for_label }}">{{ form.tags.label }}</label>
+          {{ form.tags }}
+          {% if form.tags.errors %}
+            <div class="field-error">{{ form.tags.errors }}</div>
+          {% endif %}
+          <small class="field-hint">Separate tags with commas (e.g., web design, seo, social media, branding)</small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="m-btn btn-primary-large" type="submit">
+          <span>✓</span> Create Job Posting
+        </button>
+        <a class="m-btn ghost" href="{% url 'marketing:jobs_list' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

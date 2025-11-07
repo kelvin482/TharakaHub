@@ -91,7 +91,65 @@
                 <button class="btn ghost"><i class="fas fa-file-invoice"></i> Generate Invoice</button>
             </section>
 
-            <!-- ===== Earnings Chart ===== -->
+            <!-- ===== Applications Section ===== -->
+            <section class="applications-section">
+                <h3 class="section-title">Your Applications</h3>
+                <div class="application-stats">
+                    <p>Total Applied: <strong>{{ total_applied }}</strong></p>
+                    <ul>
+                        <li>Pending: <strong>{{ application_counts.PENDING }}</strong></li>
+                        <li>Active: <strong>{{ application_counts.ACTIVE }}</strong></li>
+                        <li>Declined: <strong>{{ application_counts.DECLINED }}</strong></li>
+                    </ul>
+                </div>
+
+                {% if your_applications %}
+                <div class="applications-list">
+                    {% for app in your_applications %}
+                    <div class="application-card">
+                        <h4>{{ app.job.title }}</h4>
+                        <p>Status: <span class="status {{ app.status|lower }}">{{ app.status }}</span></p>
+                        <p>Applied on: {{ app.submitted_at|date:"M d, Y" }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="muted">You haven't applied for any jobs yet.</p>
+                {% endif %}
+            </section>
+
+            <!-- ===== Incoming Applications (for Job Posters) ===== -->
+            {% if incoming_applications %}
+            <section class="incoming-section">
+                <h3 class="section-title">Incoming Applications</h3>
+                <div class="incoming-list">
+                    {% for app in incoming_applications %}
+                    <div class="incoming-card">
+                        <strong>{{ app.applicant.username }}</strong> applied to 
+                        <em>{{ app.job.title }}</em> — 
+                        <span class="status {{ app.status|lower }}">{{ app.get_status_display }}</span>
+                        <div class="muted small">Submitted: {{ app.submitted_at|date:"M d, Y" }}</div>
+
+                        {% if app.status == "PENDING" %}
+                        <div class="incoming-actions">
+                            <form action="{% url 'jobs:change_application_status' app.id 'ACCEPTED' %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button class="btn pill accept btn-sm">Accept</button>
+                            </form>
+
+                            <form action="{% url 'jobs:change_application_status' app.id 'DECLINED' %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button class="btn pill decline btn-sm">Decline</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- ===== Analytics ===== -->
             <section class="analytics-section">
                 <h3 class="section-title">Earnings & Performance</h3>
                 <canvas id="earningsChart" height="100"></canvas>
@@ -131,7 +189,7 @@
                 </div>
             </section>
 
-            <!-- ===== Calendar / Task Tracker ===== -->
+            <!-- ===== Upcoming Tasks ===== -->
             <section class="calendar-section">
                 <h3 class="section-title">Upcoming Tasks & Deadlines</h3>
                 <ul class="calendar-list">

@@ -29,6 +29,8 @@ urlpatterns = [
     path('jobs/', include(('jobs.urls', 'jobs'), namespace='jobs')),
     # include Django's built-in auth urls under /accounts/
     path('accounts/', include('django.contrib.auth.urls')),
+    # Marketing app
+    path('marketing/', include(('marketing.urls', 'marketing'), namespace='marketing')),
 ]
 
 if settings.DEBUG:

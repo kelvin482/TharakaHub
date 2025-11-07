@@ -150,7 +150,7 @@
         <main class="main-content">
             <header>
                 <h1>Active Projects</h1>
-                <button class="add-btn"><i class="fas fa-plus"></i> New Project</button>
+                <button class="add-btn" id="openProjectModal"><i class="fas fa-plus"></i> New Project</button>
             </header>
 
             <section class="projects-grid">
@@ -169,5 +169,34 @@
             </section>
         </main>
     </div>
+
+    <!-- Add Project Modal (posts back to this page) -->
+    <div class="modal" id="projectModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:#fff; padding:20px; border-radius:12px; width:420px; box-shadow:0 10px 30px rgba(0,0,0,.15);">
+            <h3 style="margin-top:0;">Add Project</h3>
+            <form method="post" action="">
+                {% csrf_token %}
+                <label style="display:block; font-weight:600; margin-top:8px;">Title</label>
+                <input name="title" type="text" required style="width:100%; padding:8px 10px; border:1px solid #d1d5db; border-radius:8px;">
+                <label style="display:block; font-weight:600; margin-top:12px;">Description</label>
+                <textarea name="description" rows="4" style="width:100%; padding:8px 10px; border:1px solid #d1d5db; border-radius:8px;"></textarea>
+                <label style="display:block; font-weight:600; margin-top:12px;">Progress (%)</label>
+                <input name="progress" type="number" min="0" max="100" value="0" style="width:100%; padding:8px 10px; border:1px solid #d1d5db; border-radius:8px;">
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:14px;">
+                    <button type="button" id="closeProjectModal" class="add-btn" style="background:#e5e7eb; color:#111827;">Cancel</button>
+                    <button type="submit" class="add-btn">Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const openBtn = document.getElementById('openProjectModal');
+        const modal = document.getElementById('projectModal');
+        const closeBtn = document.getElementById('closeProjectModal');
+        if(openBtn){ openBtn.addEventListener('click', () => modal.style.display = 'flex'); }
+        if(closeBtn){ closeBtn.addEventListener('click', () => modal.style.display = 'none'); }
+        window.addEventListener('click', (e) => { if(e.target === modal) modal.style.display = 'none'; });
+    </script>
 </body>
 </html>

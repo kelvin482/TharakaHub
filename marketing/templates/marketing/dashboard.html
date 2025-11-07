@@ -1,0 +1,115 @@
+{% extends 'marketing/base_marketing.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h1>Your Dashboard</h1>
+      <p class="subtitle">Manage your posted jobs and track your proposals</p>
+    </div>
+  </div>
+
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ posted_jobs|length }}</div>
+        <div class="stat-label">Jobs Posted</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">💼</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ proposals_made|length }}</div>
+        <div class="stat-label">Proposals Sent</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ posted_jobs|length|add:proposals_made|length }}</div>
+        <div class="stat-label">Total Activity</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-grid-main">
+    <div class="main-content">
+      <div class="m-card dashboard-section">
+        <div class="section-header">
+          <h3>Your Posted Jobs</h3>
+          <a href="{% url 'marketing:job_create' %}" class="m-btn btn-small">+ New Job</a>
+        </div>
+        
+        {% if posted_jobs %}
+          <div class="dashboard-list">
+            {% for j in posted_jobs %}
+              <div class="dashboard-item">
+                <div class="item-main">
+                  <a href="{% url 'marketing:job_detail' j.pk %}" class="item-title">{{ j.title }}</a>
+                  <div class="item-meta">
+                    <span class="meta-badge status-{{ j.status|lower }}">{{ j.get_status_display }}</span>
+                    <span class="meta-text">Posted {{ j.created_at|date:"M d, Y" }}</span>
+                    {% if j.budget_min and j.budget_max %}
+                      <span class="meta-text">• ${{ j.budget_min }} - ${{ j.budget_max }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="item-actions">
+                  <a href="{% url 'marketing:job_detail' j.pk %}" class="action-link">View →</a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-dashboard">
+            <div class="empty-icon">📋</div>
+            <h4>No jobs posted yet</h4>
+            <p class="m-muted">Start by creating your first job posting to receive proposals from service providers.</p>
+            <a href="{% url 'marketing:job_create' %}" class="m-btn" style="margin-top: 16px;">Create Your First Job</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <aside class="m-sidebar">
+      <div class="m-card dashboard-section">
+        <div class="section-header">
+          <h3>Your Proposals</h3>
+        </div>
+        
+        {% if proposals_made %}
+          <div class="proposals-dashboard-list">
+            {% for p in proposals_made %}
+              <div class="proposal-dashboard-item">
+                <a href="{% url 'marketing:job_detail' p.job.pk %}" class="proposal-job-title">{{ p.job.title }}</a>
+                <div class="proposal-dashboard-meta">
+                  {% if p.price %}
+                    <span class="proposal-price">${{ p.price }}</span>
+                  {% endif %}
+                  {% if p.eta_days %}
+                    <span class="proposal-eta">{{ p.eta_days }} day{{ p.eta_days|pluralize }}</span>
+                  {% endif %}
+                </div>
+                <div class="proposal-status">
+                  {% if p.accepted %}
+                    <span class="m-badge accepted-badge">✓ Accepted</span>
+                  {% else %}
+                    <span class="m-badge pending-badge">Pending Review</span>
+                  {% endif %}
+                </div>
+                <div class="proposal-date">Sent {{ p.created_at|timesince }} ago</div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-dashboard">
+            <div class="empty-icon">💼</div>
+            <h4>No proposals yet</h4>
+            <p class="m-muted">Browse available jobs and submit proposals to get started.</p>
+            <a href="{% url 'marketing:jobs_list' %}" class="m-btn btn-small" style="margin-top: 16px;">Browse Jobs</a>
+          </div>
+        {% endif %}
+      </div>
+    </aside>
+  </div>
+{% endblock %}

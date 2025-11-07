@@ -1,0 +1,172 @@
+{% extends 'marketing/base_marketing.html' %}
+{% block title %}{{ job.title }}{% endblock %}
+{% block content %}
+  <div class="breadcrumb-nav">
+    <a href="{% url 'marketing:jobs_list' %}" class="breadcrumb-link">← Back to Jobs</a>
+  </div>
+
+  <article class="m-card job-detail-card">
+    <div class="job-detail-header">
+      <div class="job-title-section">
+        <h1>{{ job.title }}</h1>
+        <div class="job-header-badges">
+          {% if job.category %}
+            <span class="m-badge category-badge-large">{{ job.category.name }}</span>
+          {% endif %}
+          <span class="m-badge status-{{ job.status|lower }}-large">{{ job.get_status_display }}</span>
+          {% if job.ai_category_suggestion %}
+            <span class="m-badge ai-badge-large">🤖 AI Suggested: {{ job.ai_category_suggestion }}</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="job-detail-meta">
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">Budget Range</div>
+          <div class="meta-value">
+            {% if job.budget_min and job.budget_max %}
+              ${{ job.budget_min }} - ${{ job.budget_max }}
+            {% elif job.budget_min %}
+              From ${{ job.budget_min }}
+            {% else %}
+              <span class="negotiable">Negotiable</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">📍 Location</div>
+          <div class="meta-value">{{ job.location|default:"Remote / Anywhere" }}</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">📅 Posted</div>
+          <div class="meta-value">{{ job.created_at|date:"F d, Y" }}</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Status</div>
+          <div class="meta-value">{{ job.get_status_display }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="job-description-section">
+      <h3>Job Description</h3>
+      <div class="description-content">{{ job.description|linebreaks }}</div>
+    </div>
+
+    {% if job.tag_list %}
+      <div class="job-tags-section">
+        <h4>Tags & Skills</h4>
+        <div class="tags-container">
+          {% for tag in job.tag_list %}
+            <span class="tag-pill">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </article>
+
+  <div class="m-grid-main">
+    <div class="main-content">
+      {% if proposal_form %}
+        <div class="m-card proposal-section">
+          <div class="section-header">
+            <h3>Submit Your Proposal</h3>
+            <p class="section-subtitle">Tell the client why you're the right fit for this project</p>
+          </div>
+          {% include 'marketing/proposal_form.html' %}
+        </div>
+      {% elif user.is_authenticated and user == job.poster %}
+        <div class="m-card info-card owner-card">
+          <div class="info-icon">👤</div>
+          <div>
+            <h4>You are the job poster</h4>
+            <p class="m-muted">View and manage proposals from service providers in the sidebar.</p>
+          </div>
+        </div>
+      {% elif user.is_authenticated %}
+        <div class="m-card info-card success-card">
+          <div class="info-icon">✅</div>
+          <div>
+            <h4>Proposal Already Submitted</h4>
+            <p class="m-muted">You've already submitted a proposal for this job. The poster will review it and get back to you.</p>
+          </div>
+        </div>
+      {% else %}
+        <div class="m-card info-card login-card">
+          <div class="info-icon">🔐</div>
+          <div>
+            <h4>Login Required</h4>
+            <p class="m-muted">Please log in to submit a proposal for this job.</p>
+            <a href="{% url 'users:login' %}" class="m-btn" style="margin-top: 12px;">Login to Continue</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <aside class="m-sidebar">
+      {% if proposals %}
+        <div class="m-card proposals-sidebar">
+          <div class="section-header">
+            <h4>Proposals Received</h4>
+            <span class="proposal-count">{{ proposals|length }}</span>
+          </div>
+          <div class="proposals-list">
+            {% for p in proposals %}
+              <div class="proposal-item">
+                <div class="proposal-header">
+                  <div class="proposal-provider">
+                    <strong>{{ p.provider.get_full_name|default:p.provider.username }}</strong>
+                    <span class="provider-username">@{{ p.provider.username }}</span>
+                  </div>
+                  {% if p.accepted %}
+                    <span class="m-badge accepted-badge">✓ Accepted</span>
+                  {% else %}
+                    <span class="m-badge pending-badge">Pending</span>
+                  {% endif %}
+                </div>
+                <p class="proposal-message">{{ p.message|truncatewords:30 }}</p>
+                <div class="proposal-details">
+                  {% if p.price %}
+                    <div class="detail-item">
+                      <span class="detail-label">Price:</span>
+                      <span class="detail-value">${{ p.price }}</span>
+                    </div>
+                  {% endif %}
+                  {% if p.eta_days %}
+                    <div class="detail-item">
+                      <span class="detail-label">Timeline:</span>
+                      <span class="detail-value">{{ p.eta_days }} day{{ p.eta_days|pluralize }}</span>
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="proposal-footer">
+                  <span class="proposal-date">Submitted {{ p.created_at|timesince }} ago</span>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% elif user == job.poster %}
+        <div class="m-card info-card">
+          <div class="info-icon">📬</div>
+          <div>
+            <h4>No Proposals Yet</h4>
+            <p class="m-muted">Proposals from service providers will appear here once they submit offers for your job.</p>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="m-card actions-sidebar">
+        <h4>Quick Actions</h4>
+        <div class="actions-list">
+          <a href="{% url 'marketing:jobs_list' %}" class="action-link">← Browse More Jobs</a>
+          {% if user == job.poster %}
+            <a href="{% url 'marketing:dashboard' %}" class="action-link">📊 View Dashboard</a>
+          {% endif %}
+        </div>
+      </div>
+    </aside>
+  </div>
+{% endblock %}

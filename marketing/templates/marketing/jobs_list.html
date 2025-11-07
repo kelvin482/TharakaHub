@@ -1,0 +1,157 @@
+{% extends 'marketing/base_marketing.html' %}
+{% block title %}Browse Marketing Jobs{% endblock %}
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h1>Marketing Jobs Marketplace</h1>
+      <p class="subtitle">Connect with businesses seeking marketing services or post your service needs</p>
+    </div>
+    <a href="{% url 'marketing:job_create' %}" class="m-btn btn-primary-large">
+      <span>+</span> Post a Job
+    </a>
+  </div>
+
+  <div class="m-grid-main">
+    <div class="main-content">
+      <div class="m-card search-section">
+        <form method="get" class="m-search-form">
+          <div class="search-input-group">
+            <label for="search">Search Jobs</label>
+            <input id="search" class="m-input" type="text" name="q" value="{{ q }}" placeholder="Search by title, tags, or description…">
+          </div>
+          <div class="filter-group">
+            <label for="category">Category</label>
+            <select id="category" class="m-select" name="category">
+              <option value="">All Categories</option>
+              {% for c in categories %}
+                <option value="{{ c.slug }}" {% if current_category and current_category.pk == c.pk %}selected{% endif %}>{{ c.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button class="m-btn" type="submit">
+            <span>🔍</span> Search
+          </button>
+        </form>
+      </div>
+
+      {% if jobs %}
+        <div class="results-header">
+          <h3>Found {{ jobs.paginator.count }} job{{ jobs.paginator.count|pluralize }}</h3>
+        </div>
+      {% endif %}
+
+      <div class="m-cards">
+        {% for job in jobs %}
+          <a class="m-card m-job-card" href="{% url 'marketing:job_detail' job.pk %}">
+
+            <div class="job-card-header">
+              <div class="job-title-section">
+                <h3>{{ job.title }}</h3>
+                <div class="job-badges">
+                  <span class="m-badge status-{{ job.status|lower }}">{{ job.get_status_display }}</span>
+                  {% if job.category %}
+                    <span class="m-badge category-badge">{{ job.category.name }}</span>
+                  {% endif %}
+                  {% if job.ai_category_suggestion %}
+                    <span class="m-badge ai-badge">🤖 {{ job.ai_category_suggestion }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <p class="job-description">{{ job.description|truncatewords:35 }}</p>
+
+            {% if job.tag_list %}
+              <div class="job-tags">
+                {% for tag in job.tag_list|slice:":5" %}
+                  <span class="tag-item">{{ tag }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="job-card-footer">
+              <div class="job-budget">
+                {% if job.budget_min and job.budget_max %}
+                  <span class="budget-amount">${{ job.budget_min }} - ${{ job.budget_max }}</span>
+                {% elif job.budget_min %}
+                  <span class="budget-amount">From ${{ job.budget_min }}</span>
+                {% else %}
+                  <span class="budget-negotiable">Budget: Negotiable</span>
+                {% endif %}
+              </div>
+
+              <div class="job-meta-info">
+                <span class="meta-item">📅 {{ job.created_at|date:"M d, Y" }}</span>
+                {% if job.location %}
+                  <span class="meta-item">📍 {{ job.location }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="job-card-action">
+              <span class="view-link">View Details →</span>
+            </div>
+
+          </a>
+        {% empty %}
+          <div class="m-card empty-state">
+            <div class="empty-icon">📋</div>
+            <h3>No jobs found</h3>
+            <p class="m-muted">Try adjusting your search criteria or be the first to post a job!</p>
+            <a href="{% url 'marketing:job_create' %}" class="m-btn" style="margin-top: 20px;">Post the First Job</a>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if jobs.has_other_pages %}
+        <div class="m-pagination">
+          {% if jobs.has_previous %}
+            <a class="m-btn ghost" href="?page={{ jobs.previous_page_number }}&q={{ q }}{% if current_category %}&category={{ current_category.slug }}{% endif %}">
+              ← Previous
+            </a>
+          {% endif %}
+          <span class="page-info">Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}</span>
+          {% if jobs.has_next %}
+            <a class="m-btn ghost" href="?page={{ jobs.next_page_number }}&q={{ q }}{% if current_category %}&category={{ current_category.slug }}{% endif %}">
+              Next →
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <aside class="m-sidebar">
+      <div class="m-card sidebar-card">
+        <div class="sidebar-icon">💡</div>
+        <h4>AI-Powered Matching</h4>
+        <p class="m-muted">
+          Our intelligent system analyzes job descriptions and automatically suggests relevant categories like <strong>Web Development</strong>, <strong>SEO/Content</strong>, or <strong>Branding/Design</strong>.
+        </p>
+        <div class="sidebar-note">
+          <small>Currently using rule-based classification. Upgrade to full ML for improved accuracy.</small>
+        </div>
+      </div>
+
+      <div class="m-card sidebar-card highlight-card">
+        <div class="sidebar-icon">✨</div>
+        <h4>Post Your Job</h4>
+        <p class="m-muted">
+          Need marketing services? Post your job and receive competitive proposals from qualified providers.
+        </p>
+        <a class="m-btn btn-full-width" href="{% url 'marketing:job_create' %}">
+          Create Job Posting
+        </a>
+      </div>
+
+      <div class="m-card sidebar-card">
+        <h4>Quick Tips</h4>
+        <ul class="tips-list">
+          <li>Use specific keywords in your search</li>
+          <li>Filter by category for better results</li>
+          <li>Check job details before submitting proposals</li>
+          <li>Keep your profile updated</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+{% endblock %}

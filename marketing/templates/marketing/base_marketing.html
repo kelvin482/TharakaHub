@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Marketing Marketplace{% endblock %} | MarketHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'marketing/css/marketing.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <nav class="m-nav">
+    <div class="m-container m-nav-content">
+      <a class="brand" href="{% url 'marketing:jobs_list' %}">
+        <span class="brand-icon">🚀</span>
+        Market<span>Hub</span>
+      </a>
+      <div class="links">
+        <a href="{% url 'marketing:jobs_list' %}" class="nav-link-item">Browse Jobs</a>
+        <a href="{% url 'marketing:job_create' %}" class="nav-link-item">Post Job</a>
+        <a href="{% url 'marketing:dashboard' %}" class="nav-link-item">Dashboard</a>
+        <li><a href="{% url 'users:home' %}"  class="nav-link-item">Home</a></li>
+
+      </div>
+    </div>
+  </nav>
+
+  <main class="m-container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="m-footer">
+    <div class="m-container">
+      <p class="m-muted">© {% now "Y" %} MarketHub. Connect businesses with service providers.</p>
+    </div>
+  </footer>
+
+  <script src="{% static 'marketing/js/marketing.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

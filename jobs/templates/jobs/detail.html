@@ -4,19 +4,41 @@
 {% block title %}Job Detail | TharakaHub{% endblock %}
 
 {% block content %}
-<section class="section">
-    <img class="card-media" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&q=80" alt="job cover">
+<link rel="stylesheet" href="{% static 'jobs/css/job_detail.css' %}">
+
+<section class="job-detail-section">
+  <div class="job-detail-card">
+    <h1 class="job-title">{{ job.title }}</h1>
+
     <span class="department-tag">{{ job.department }}</span>
-    <h1 class="section-title">{{ job.title }}</h1>
-    <p class="post-excerpt">{{ job.description }}</p>
-    <div class="post-meta" style="margin-top:8px;">
-        <span>Status: {{ job.get_status_display }}</span>
-        <span>Due: {{ job.deadline }}</span>
-        <span>Budget: Ksh {{ job.price }}</span>
+
+    <p class="job-description">{{ job.description }}</p>
+
+    <div class="job-info">
+      <p><strong>Status:</strong> {{ job.get_status_display }}</p>
+      <p><strong>Due:</strong> {{ job.deadline }}</p>
+      <p><strong>Budget:</strong> Ksh {{ job.price }}</p>
     </div>
-    <div style="margin-top:16px;">
-        <a class="read-link" href="{% url 'jobs:list' %}">← Back to jobs</a>
+
+    <div class="job-actions">
+      <!-- existing Back link -->
+      <a href="{% url 'jobs:list' %}" class="back-btn">← Back to Jobs</a>
+
+      <!-- POST form to apply -->
+      <form action="{% url 'jobs:apply' job.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <!-- optional: small textarea for cover letter -->
+        <!--
+        <textarea
+          name="cover_letter"
+          placeholder="Write a cover letter (optional)"
+          rows="3"
+          style="display:block; width:100%; margin-top:0.5rem;"
+        ></textarea>
+        -->
+        <button type="submit" class="apply-btn">Apply Now</button>
+      </form>
     </div>
+  </div>
 </section>
 {% endblock %}
-

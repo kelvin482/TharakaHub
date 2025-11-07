@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jobs',
     'users',
+    'marketing',
 ]
 
 MIDDLEWARE = [
@@ -140,6 +141,9 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+
 
 # Ensure login redirects go to our app's views
 LOGIN_URL = 'users:login'
