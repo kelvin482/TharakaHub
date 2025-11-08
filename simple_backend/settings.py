@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'jobs',
     'users',
     'marketing',
+    'ai_agent',
 ]
 
 MIDDLEWARE = [

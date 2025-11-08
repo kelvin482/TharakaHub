@@ -28,11 +28,11 @@
                 <div class="assignment-card">
                     <h3 class="assignment-title">{{ job.title }}</h3>
                     {% if job.unit %}
-                    <p style="margin: 0 0 12px; font-size: 0.85rem; color: var(--muted, #6b7280);">
+                    <p style="margin: 0 0 12px; font-size: 0.85rem; color: var(--muted, #23b538);">
                         <strong>Unit:</strong> {{ job.unit|title }}
                     </p>
                     {% endif %}
-                    <p style="margin: 0 0 16px; font-size: 0.9rem; color: var(--muted, #6b7280); line-height: 1.5;">
+                    <p style="margin: 0 0 16px; font-size: 0.9rem; color: var(--muted, #2eaf34); line-height: 1.5;">
                         {{ job.description|truncatewords:25 }}
                     </p>
                     <div class="assignment-meta">

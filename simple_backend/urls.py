@@ -31,6 +31,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     # Marketing app
     path('marketing/', include(('marketing.urls', 'marketing'), namespace='marketing')),
+    #ai_agent
+     path('agent/', include('ai_agent.urls', namespace='agent')),
 ]
 
 if settings.DEBUG:

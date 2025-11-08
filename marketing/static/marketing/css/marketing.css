@@ -1,16 +1,16 @@
 :root {
-  --primary: #0ea5a4;
-  --primary-dark: #0d9488;
-  --accent: #0369a1;
+  --primary: #630707;
+  --primary-dark: #fb0707;
+  --accent: #000000;     /*market hub*/
   --accent-dark: #075985;
-  --bg: #f8fafc;
+  --bg: #ffffff;
   --card: #ffffff;
   --text: #111827;
   --text-light: #374151;
   --muted: #6b7280;
   --muted-light: #9ca3af;
   --border: #e5e7eb;
-  --border-light: #f3f4f6;
+  --border-light: #ffffff;
   --success: #059669;
   --warning: #d97706;
   --error: #dc2626;
@@ -41,17 +41,51 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Navigation */
+/* Navigation on the top one */
+/* 🌐 Navbar Styling */
 .m-nav {
   position: sticky;
   top: 0;
-  background: var(--card);
-  box-shadow: var(--shadow);
   z-index: 1000;
+
+  /* Colors and background */
+  --navbar-text: #ffffff; /* Text color only for navbar */
+  background: rgb(5, 15, 120); /* Dark blue translucent background */
+  color: var(--navbar-text);
+
+  /* Visuals */
+  box-shadow: var(--shadow);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.95);
+
+  /* Smooth effects */
+  transition: var(--transition);
 }
+
+/* 🧭 Navbar links */
+.m-nav a {
+  color: var(--navbar-text);
+  text-decoration: none;
+  font-weight: 500;
+  margin: 0 0.75rem;
+  transition: var(--transition);
+}
+
+/* Hover/active states */
+.m-nav a:hover,
+.m-nav a:focus {
+  color: var(--accent);
+}
+
+/* Optional: logo or brand */
+.m-nav .brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navbar-text);
+}
+
+
+
 
 .m-nav .m-nav-content {
   max-width: 1100px;
@@ -958,7 +992,7 @@ html, body {
 }
 
 .dashboard-item:hover {
-  background: #fff;
+  background: #ffffff;
   box-shadow: var(--shadow);
 }
 

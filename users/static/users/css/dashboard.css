@@ -8,8 +8,10 @@
    Root Theme Variables
 =========================== */
 :root {
-  --primary: #007bff;
-  --primary-dark: #002b5b;
+  --primary: #2c1981;   /* Deep Royal Blue / Purple */
+--secondary: #4DD0E1; /* Soft Cyan */
+
+  --primary: #2c1981;   /* Deep Royal Blue / Purple */
   --accent: #f6c90e;
   --success: #22c55e;
   --warning: #facc15;
@@ -19,7 +21,7 @@
   --text: #1f2937;
   --text-light: #f3f3f3;
   --muted: #6b7280;
-  --gradient: linear-gradient(135deg, #007bff, #00b4d8);
+  --gradient: linear-gradient(135deg, #2c1981, #07516a);
   --radius: 12px;
   --shadow: 0 6px 18px rgba(0,0,0,0.08);
   --transition: all 0.3s ease-in-out;
@@ -77,7 +79,7 @@ body {
 /* Sidebar */
 .sidebar {
   width: 260px;
-  background: var(--primary-dark);
+  background-color: #07516a;
   color: var(--text-light);
   border-radius: var(--radius);
   padding: 20px;

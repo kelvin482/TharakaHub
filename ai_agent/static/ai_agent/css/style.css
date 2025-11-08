@@ -1,0 +1,115 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Container styling */
+.container {
+    max-width: 500px;
+    margin: 80px auto;
+    padding: 40px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Header */
+h1 {
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* Form */
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* File input */
+.upload-form input[type="file"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+/* Button */
+.upload-form button {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.upload-form button:hover {
+    background: #45a049;
+}
+
+/* Example text */
+.example-text {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+}
+
+/*result css */
+/* Graph container */
+.graph-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.graph-container img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Table styling */
+.table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.table-container th, 
+.table-container td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.table-container th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Back button styling */
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background-color: #2196F3;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #1976D2;
+}

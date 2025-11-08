@@ -7,12 +7,12 @@
 /* Color palette */
 :root {
   /* Main Colors */
-  --primary: #1A3D7C;      /* Deep Royal Blue */
+  --primary: #2c1981;      /* Deep Royal Blue */
   --secondary: #4DD0E1;    /* Soft Cyan */
   --accent: #FFC107;       /* Warm Gold */
   
   /* Backgrounds */
-  --bg: #F5F7FA;          /* Light Off-White - Main Background */
+  --bg: #ffffff;          /* Light Off-White - Main Background */
   --bg-alt: #E8EEF7;      /* Pale Blue Tint - Alternate Section Background */
   --card: #FFFFFF;        /* Pure White - Card Background */
   
