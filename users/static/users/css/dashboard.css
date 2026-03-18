@@ -4,38 +4,7 @@
    Author: Kelvin Kiambi
 ========================================== */
 
-/* ===========================
-   Root Theme Variables
-=========================== */
-:root {
-  --primary: #007bff;
-  --primary-dark: #002b5b;
-  --accent: #f6c90e;
-  --success: #22c55e;
-  --warning: #facc15;
-  --danger: #ef4444;
-  --bg: #f5f7fb;
-  --card: #ffffff;
-  --text: #1f2937;
-  --text-light: #f3f3f3;
-  --muted: #6b7280;
-  --gradient: linear-gradient(135deg, #007bff, #00b4d8);
-  --radius: 12px;
-  --shadow: 0 6px 18px rgba(0,0,0,0.08);
-  --transition: all 0.3s ease-in-out;
-  --nav-height: 60px;
-}
-
-/* ===========================
-   Base Resets
-=========================== */
-body {
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  margin: 0;
-  padding: 0;
-}
+/* Dashboard styling inherits global theme variables from users/css/style.css */
 
 /* ===========================
    Dashboard Header

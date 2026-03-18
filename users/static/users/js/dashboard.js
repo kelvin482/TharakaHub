@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', function () {
-  console.log('Dashboard JS loaded ✅');
+﻿document.addEventListener('DOMContentLoaded', function () {
+  console.log('Dashboard JS loaded');
 
   // Initialize chart (Chart.js)
   const ctx = document.getElementById('earningsChart');
@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
         datasets: [{
           label: 'Monthly Earnings (Ksh)',
           data: [12000, 18000, 16000, 22000, 25000, 30000],
-          borderColor: '#0077ff',
-          backgroundColor: 'rgba(0,119,255,0.1)',
+          borderColor: '#1A3D7C',
+          backgroundColor: 'rgba(26, 61, 124, 0.1)',
           tension: 0.3,
           fill: true,
         }]
@@ -35,3 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
     bar.style.width = progress + '%';
   });
 });
+
+
+

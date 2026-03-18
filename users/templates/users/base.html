@@ -11,7 +11,7 @@
     body { padding-top: var(--nav-height, 64px); }
     </style>
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-container">

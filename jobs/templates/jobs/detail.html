@@ -1,11 +1,15 @@
-{% extends 'users/base.html' %}
+﻿{% extends 'users/base.html' %}
 {% load static %}
 
 {% block title %}Job Detail | TharakaHub{% endblock %}
 
-{% block content %}
-<link rel="stylesheet" href="{% static 'jobs/css/job_detail.css' %}">
+{% block body_class %}job-detail-page{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'jobs/css/job_detail.css' %}">
+{% endblock %}
+
+{% block content %}
 <section class="job-detail-section">
   <div class="job-detail-card">
     <h1 class="job-title">{{ job.title }}</h1>
@@ -22,7 +26,7 @@
 
     <div class="job-actions">
       <!-- existing Back link -->
-      <a href="{% url 'jobs:list' %}" class="back-btn">← Back to Jobs</a>
+      <a href="{% url 'jobs:list' %}" class="back-btn">&larr; Back to Jobs</a>
 
       <!-- POST form to apply -->
       <form action="{% url 'jobs:apply' job.id %}" method="post" style="display:inline;">
@@ -42,3 +46,4 @@
   </div>
 </section>
 {% endblock %}
+

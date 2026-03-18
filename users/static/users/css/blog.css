@@ -1,4 +1,4 @@
-/* Blog detail styles */
+﻿/* Blog detail styles */
 .blog-banner {
   position: relative;
   height: 400px;
@@ -99,7 +99,7 @@
   margin: 32px 0;
   padding: 24px 32px;
   border-left: 4px solid var(--primary);
-  background: rgba(0,119,255,0.04);
+  background: rgba(26, 61, 124, 0.04);
   border-radius: 0 12px 12px 0;
 }
 

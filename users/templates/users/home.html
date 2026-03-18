@@ -1,4 +1,4 @@
-{% extends 'users/base.html' %}
+﻿{% extends 'users/base.html' %}
 {% load static %}
 
 {% block title %}Home | TharakaHub{% endblock %}
@@ -7,46 +7,71 @@
 <style>
     .hero-section {
         background: var(--gradient);
-        padding: 72px 24px;
-        margin: -32px -24px 32px;
+        padding: clamp(56px, 6vw, 96px) var(--pad-desktop);
+        margin: calc(-1 * var(--section-gap-desktop)) calc(-1 * var(--pad-desktop)) var(--section-gap-desktop);
         color: var(--text-light);
         text-align: center;
         position: relative;
         overflow: hidden;
+        min-height: clamp(520px, 65vh, 720px);
+        display: flex;
+        align-items: center;
     }
 
     .hero-media {
         position: absolute;
         inset: 0;
-        opacity: .08;
-        background-image: url('https://images.unsplash.com/photo-1523246191915-43f03f7e3e05?w=1600&q=80');
-        background-size: cover;
-        background-position: center;
+        opacity: 0.12;
+        background:
+          radial-gradient(circle at 20% 20%, rgba(255,255,255,0.35), transparent 45%),
+          radial-gradient(circle at 80% 30%, rgba(255,255,255,0.25), transparent 40%),
+          radial-gradient(circle at 50% 80%, rgba(255,255,255,0.2), transparent 45%);
         pointer-events: none;
     }
 
+    .hero-inner {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 48px;
+        align-items: center;
+        text-align: left;
+    }
+
+    .hero-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
     .hero-title {
-        font-size: 2.5rem;
+        font-size: clamp(2.2rem, 3.2vw, 3.1rem);
         font-weight: 600;
         margin: 0 0 16px;
     }
 
     .hero-subtitle {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         opacity: 0.9;
         max-width: 600px;
-        margin: 0 auto;
+        margin: 0;
     }
 
     .stats-container {
         display: flex;
-        justify-content: center;
-        gap: 48px;
-        margin-top: 48px;
+        justify-content: flex-start;
+        gap: 32px;
+        margin-top: 24px;
+        flex-wrap: wrap;
     }
 
     .stat-item {
-        text-align: center;
+        text-align: left;
+        min-width: 140px;
     }
 
     .stat-value {
@@ -57,6 +82,32 @@
 
     .stat-label {
         opacity: 0.9;
+    }
+
+    .hero-art {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        isolation: isolate;
+    }
+
+    .hero-card {
+        width: min(420px, 90%);
+        aspect-ratio: 4 / 5;
+        border-radius: 24px;
+        position: relative;
+        overflow: visible;
+        background: transparent;
+    }
+
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 18px;
+        display: block;
+        mix-blend-mode: multiply;
+        filter: drop-shadow(0 24px 40px rgba(10, 22, 55, 0.28));
     }
 
     .content-grid {
@@ -115,7 +166,7 @@
     .assignment-card:hover,
     .post-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 20px 48px rgba(0,119,255,0.15);
+        box-shadow: var(--shadow-hover);
     }
 
     .assignment-title,
@@ -189,9 +240,34 @@
         box-shadow: var(--shadow);
     }
 
+    @media (max-width: 1024px) {
+        .hero-section {
+            padding: 56px var(--pad-tablet);
+            margin: calc(-1 * var(--section-gap-tablet)) calc(-1 * var(--pad-tablet)) var(--section-gap-tablet);
+        }
+
+        .hero-inner {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .hero-subtitle {
+            margin: 0 auto;
+        }
+
+        .stats-container {
+            justify-content: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+    }
+
     @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2rem;
+        .hero-section {
+            padding: 48px var(--pad-mobile);
+            margin: calc(-1 * var(--section-gap-mobile)) calc(-1 * var(--pad-mobile)) var(--section-gap-mobile);
         }
 
         .stats-container {
@@ -214,22 +290,31 @@
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="hero-media"></div>
-    <h1 class="hero-title">Welcome, {{ user.username }}!</h1>
-    <p class="hero-subtitle">Access assignments, collaborate with peers, and excel in your academic journey with TharakaHub.</p>
-    
-    <!-- Statistics -->
-    <div class="stats-container">
-        <div class="stat-item">
-            <div class="stat-value">{{ total_assignments }}+</div>
-            <div class="stat-label">Total Assignments</div>
+    <div class="hero-inner">
+        <div class="hero-copy">
+            <h1 class="hero-title">Welcome, {{ user.username }}!</h1>
+            <p class="hero-subtitle">Access assignments, collaborate with peers, and excel in your academic journey with TharakaHub.</p>
+
+            <!-- Statistics -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-value">{{ total_assignments }}+</div>
+                    <div class="stat-label">Total Assignments</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ active_users }}+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ success_rate }}%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value">{{ active_users }}+</div>
-            <div class="stat-label">Active Users</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">{{ success_rate }}%</div>
-            <div class="stat-label">Success Rate</div>
+        <div class="hero-art">
+            <div class="hero-card">
+                <img class="hero-image" src="/media/images/1c559447c5356c7194fad600e8884203.jpg" alt="Student celebrating progress on a laptop">
+            </div>
         </div>
     </div>
 </section>
@@ -309,7 +394,7 @@
                     <span>Due in {{ assignment.deadline }}</span>
                 </div>
                 <div style="margin-top:12px;">
-                    <a class="read-link" href="{% url 'users:jobs' %}">Read more →</a>
+                    <a class="read-link" href="{% url 'users:jobs' %}">Read more &rarr;</a>
                 </div>
             </div>
             {% endfor %}
@@ -327,7 +412,7 @@
                 <span class="department-tag">{{ post.category }}</span>
                 <h3 class="post-title">{{ post.title }}</h3>
                 <p class="post-excerpt">{{ post.excerpt }}</p>
-                <a class="read-link" href="{% url 'users:blog' %}">Read more →</a>
+                <a class="read-link" href="{% url 'users:blog' %}">Read more &rarr;</a>
             </div>
             {% endfor %}
         </div>
@@ -364,3 +449,4 @@
 
 </section>
 {% endblock %}
+

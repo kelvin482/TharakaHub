@@ -1,128 +1,131 @@
-/* job_detail.css */
+﻿/* job_detail.css */
 
-/* General page styling */
-body {
-  background: linear-gradient(135deg, #eef2ff 0%, #fdf2f8 100%);
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #1e293b;
-  margin: 0;
-  padding: 0;
+body.job-detail-page {
+  color: var(--text);
 }
 
-/* Main section */
 .job-detail-section {
   display: flex;
   justify-content: center;
-  padding: 60px 20px;
-  background: linear-gradient(135deg, #e0f7fa 0%, #f0f9ff 50%, #fff0f6 100%);
-  min-height: 100vh;
+  align-items: flex-start;
+  padding: var(--section-gap-desktop) var(--pad-desktop);
+  min-height: calc(100vh - var(--nav-height, 0px));
 }
 
-/* Card container */
 .job-detail-card {
-  background: linear-gradient(145deg, #ffffff, #f8fafc);
-  border-radius: 20px;
-  box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.06);
-  max-width: 720px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-light);
+  max-width: 760px;
   width: 100%;
-  padding: 45px 40px;
-  border: 1px solid rgba(229, 231, 235, 0.8);
-  transition: all 0.3s ease;
-}
-
-.job-detail-card:hover {
-  box-shadow:
-    0 16px 35px rgba(0, 0, 0, 0.12),
-    0 6px 15px rgba(0, 0, 0, 0.06);
-  transform: translateY(-4px);
-}
-
-/* Title */
-.job-title {
-  font-size: 30px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 15px;
+  padding: 40px;
+  transition: var(--transition);
   text-align: center;
 }
 
-/* Department tag */
+.job-detail-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.job-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
 .department-tag {
   display: inline-block;
-  background: linear-gradient(135deg, #60a5fa, #2563eb);
-  color: #ffffff;
+  background: var(--gradient);
+  color: var(--text-light);
   font-weight: 600;
   padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 14px;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
 }
 
-/* Description */
 .job-description {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.7;
-  color: #475569;
-  margin-bottom: 30px;
-  text-align: justify;
+  color: var(--muted);
+  margin-bottom: 24px;
+  text-align: left;
 }
 
-/* Info grid */
 .job-info {
-  background: linear-gradient(145deg, #f1f5f9, #f8fafc);
-  border-radius: 15px;
-  padding: 22px 25px;
-  margin-bottom: 35px;
-  box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.05);
+  background: var(--bg-alt);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 28px;
+  border: 1px solid var(--border-light);
+  text-align: left;
 }
 
 .job-info p {
   margin: 8px 0;
-  color: #334155;
+  color: var(--text);
   font-weight: 500;
 }
 
-/* Buttons container */
 .job-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  text-align: left;
 }
 
-/* Back button */
 .back-btn {
   text-decoration: none;
   font-weight: 600;
   padding: 10px 18px;
   border-radius: 8px;
-  color: #2563eb;
-  transition: all 0.3s ease;
+  color: var(--primary);
+  transition: var(--transition);
 }
 
 .back-btn:hover {
-  text-decoration: underline;
-  color: #1e3a8a;
+  background: rgba(26, 61, 124, 0.08);
 }
 
-/* Apply button - Blue → White → Orange gradient */
 .apply-btn {
-  background: linear-gradient(135deg, #3b82f6 0%, #ffffff 50%, #f97316 100%);
-  color: #0f172a;
-  font-weight: 700;
+  background: var(--gradient);
+  color: white;
+  font-weight: 600;
   padding: 12px 24px;
   border-radius: 10px;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  transition: var(--transition);
   border: none;
-  letter-spacing: 0.3px;
+  cursor: pointer;
+  letter-spacing: 0.2px;
 }
 
 .apply-btn:hover {
-  background: linear-gradient(135deg, #2563eb 0%, #e0f2fe 40%, #fb923c 100%);
-  color: #ffffff;
-  box-shadow: 0 8px 18px rgba(251, 146, 60, 0.35);
-  transform: translateY(-3px);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(26, 61, 124, 0.16);
+}
+
+@media (max-width: 768px) {
+  .job-detail-section {
+    padding: var(--section-gap-mobile) var(--pad-mobile);
+  }
+
+  .job-detail-card {
+    padding: 28px;
+  }
+
+  .job-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .back-btn,
+  .apply-btn {
+    width: 100%;
+    text-align: center;
+  }
 }

@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,64 +5,71 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Create Account - Simple Backend</title>
-    <link rel="stylesheet" href="{% static 'users/style.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
 </head>
-<body class="gradient-bg">
-    <main class="page-center">
-        <section class="auth-card">
-            <div class="auth-header">
-                <h1 class="brand">Create Account</h1>
-                <p class="auth-subtitle">Join our community</p>
+<body class="auth-page signup-page">
+    <main class="auth-shell">
+        <section class="auth-visual">
+            <div class="auth-visual-content">
+                <span class="auth-eyebrow">TharakaHub</span>
+                <h1 class="auth-visual-title">Create a profile that opens doors to real assignments.</h1>
+                <p class="auth-visual-text">Set up your account, showcase your skills, and start collaborating today.</p>
+                <ul class="auth-benefits">
+                    <li>Build credibility with completed projects.</li>
+                    <li>Stay on top of deadlines and payments.</li>
+                    <li>Join a community of motivated learners.</li>
+                </ul>
             </div>
+        </section>
+        <section class="auth-panel">
+            <div class="auth-panel-inner">
+                <h2 class="auth-title">Create your account</h2>
+                <p class="auth-caption">Already have an account? <a href="{% url 'users:login' %}" class="auth-link">Sign in</a></p>
 
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li class="msg {{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="msg {{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
 
-            <form method="post" action="{% url 'users:register' %}" class="form" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label class="label" for="id_username">Username</label>
-                    <input class="input" type="text" name="username" id="id_username" 
-                           required autocomplete="username" placeholder="Choose a username">
-                </div>
+                <form method="post" action="{% url 'users:register' %}" class="form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="label" for="id_username">Username</label>
+                        <input class="input" type="text" name="username" id="id_username"
+                               required autocomplete="username" placeholder="Choose a username">
+                    </div>
 
-                <div class="form-group">
-                    <label class="label" for="id_email">Email</label>
-                    <input class="input" type="email" name="email" id="id_email" 
-                           required autocomplete="email" placeholder="Enter your email">
-                </div>
+                    <div class="form-group">
+                        <label class="label" for="id_email">Email</label>
+                        <input class="input" type="email" name="email" id="id_email"
+                               required autocomplete="email" placeholder="Enter your email">
+                    </div>
 
-                <div class="form-group">
-                    <label class="label" for="id_password">Password</label>
-                    <input class="input" type="password" name="password" id="id_password" 
-                           required autocomplete="new-password" placeholder="Create a password">
-                </div>
+                    <div class="form-group">
+                        <label class="label" for="id_password">Password</label>
+                        <input class="input" type="password" name="password" id="id_password"
+                               required autocomplete="new-password" placeholder="Create a password">
+                    </div>
 
-                <div class="form-group">
-                    <label class="label" for="id_password2">Confirm Password</label>
-                    <input class="input" type="password" name="password2" id="id_password2" 
-                           required autocomplete="new-password" placeholder="Confirm your password">
-                </div>
+                    <div class="form-group">
+                        <label class="label" for="id_password2">Confirm Password</label>
+                        <input class="input" type="password" name="password2" id="id_password2"
+                               required autocomplete="new-password" placeholder="Confirm your password">
+                    </div>
 
-                <div class="terms-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="terms" id="id_terms" required>
-                        <span>I agree to the <a href="#" class="terms-link">Terms of Service</a></span>
-                    </label>
-                </div>
+                    <div class="terms-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="terms" id="id_terms" required>
+                            <span>I agree to the <a href="#" class="terms-link">Terms of Service</a></span>
+                        </label>
+                    </div>
 
-                <button class="btn primary full-width" type="submit">Create Account</button>
-            </form>
-
-            <p class="auth-footer">
-                Already have an account? 
-                <a href="{% url 'users:login' %}" class="auth-link">Sign In</a>
-            </p>
+                    <button class="btn primary full-width" type="submit">Create Account</button>
+                </form>
+            </div>
         </section>
     </main>
 </body>

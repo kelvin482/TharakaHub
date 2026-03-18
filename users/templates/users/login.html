@@ -5,53 +5,60 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Login - Simple Backend</title>
-    <link rel="stylesheet" href="{% static 'users/style.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
 </head>
-<body class="gradient-bg">
-    <main class="page-center">
-        <section class="auth-card">
-            <div class="auth-header">
-                <h1 class="brand">Welcome Back</h1>
-                <p class="auth-subtitle">Sign in to continue</p>
+<body class="auth-page">
+    <main class="auth-shell">
+        <section class="auth-visual">
+            <div class="auth-visual-content">
+                <span class="auth-eyebrow">TharakaHub</span>
+                <h1 class="auth-visual-title">Join thousands building skills, portfolios, and careers.</h1>
+                <p class="auth-visual-text">Access real assignments, collaborate with peers, and grow your academic journey.</p>
+                <ul class="auth-benefits">
+                    <li>Verified assignments from multiple departments.</li>
+                    <li>Track earnings, deadlines, and progress in one dashboard.</li>
+                    <li>Build a portfolio that stands out.</li>
+                </ul>
             </div>
+        </section>
+        <section class="auth-panel">
+            <div class="auth-panel-inner">
+                <h2 class="auth-title">Sign in to TharakaHub</h2>
+                <p class="auth-caption">Don't have an account? <a href="{% url 'users:register' %}" class="auth-link">Create a free account</a></p>
 
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li class="msg {{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="msg {{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
 
-            <form method="post" action="{% url 'users:login' %}" class="form">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label class="label" for="id_username">Username</label>
-                    <input class="input" type="text" name="username" id="id_username" 
-                           required autocomplete="username" placeholder="Enter your username">
-                </div>
+                <form method="post" action="{% url 'users:login' %}" class="form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="label" for="id_username">Username</label>
+                        <input class="input" type="text" name="username" id="id_username"
+                               required autocomplete="username" placeholder="Enter your username">
+                    </div>
 
-                <div class="form-group">
-                    <label class="label" for="id_password">Password</label>
-                    <input class="input" type="password" name="password" id="id_password" 
-                           required autocomplete="current-password" placeholder="Enter your password">
-                </div>
+                    <div class="form-group">
+                        <label class="label" for="id_password">Password</label>
+                        <input class="input" type="password" name="password" id="id_password"
+                               required autocomplete="current-password" placeholder="Enter your password">
+                    </div>
 
-                <div class="form-footer">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="remember" id="id_remember">
-                        <span>Remember me</span>
-                    </label>
-                    <a href="#" class="forgot-link">Forgot Password?</a>
-                </div>
+                    <div class="form-footer">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="remember" id="id_remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
 
-                <button class="btn primary full-width" type="submit">Sign In</button>
-            </form>
-
-            <p class="auth-footer">
-                Don't have an account? 
-                <a href="{% url 'users:register' %}" class="auth-link">Create Account</a>
-            </p>
+                    <button class="btn primary full-width" type="submit">Sign In</button>
+                </form>
+            </div>
         </section>
     </main>
 </body>
